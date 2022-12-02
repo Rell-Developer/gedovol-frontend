@@ -3,12 +3,17 @@ import { useState } from 'react';
 
 // Componentes
 import Footer from '../../components/Footer';
+import Alerta from '../../components/Alerta';
 
 const Login = () => {
 
     // Variables y UseStates
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
+    const [alerta, setAlerta] = useState({});
+    
+    // Mensaje de Alerta
+    const {msg} = alerta
 
     // Funciones
     const handleSubmit = (e) =>{
@@ -17,13 +22,13 @@ const Login = () => {
 
         // Validacion
         if(usuario === '' || password === ''){
-            console.log('Todos los campos son obligatorios');
+            setAlerta({msg:'Todos los campos son obligatorios', error: true});
             return
         }
 
         // Validacion de la contraseña
         if(password.length < 6){
-            console.log('La contraseña debe tener más de 6 caracteres');
+            setAlerta({msg:'La contraseña debe tener más de 6 caracteres', error: true});
             return
         }
 
@@ -34,6 +39,9 @@ const Login = () => {
     // Retorno de Contenido
     return (
         <>
+            {/* Aparece el mensaje */}
+            {msg && <Alerta alerta={alerta}/>}
+
             <div className='flex justify-between flex-col'>
                 {/* Encabezado */}
                 <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
