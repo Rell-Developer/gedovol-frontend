@@ -77,7 +77,7 @@ const Desarrolladores = () => {
                                 <p className='text-color2'>
                                     Github:
                                     <span className='font-normal text-black'>
-                                        <a href="https://github.com" target="_blank"> Adriana Moncada</a>
+                                        <a href="https://github.com/Adrimoncada2" target="_blank"> @Adrimoncada2</a>
                                     </span>
                                 </p>
                             </div>

@@ -50,7 +50,7 @@ const Login = () => {
         // Pasa la validacion
         console.log('Buscando en la base de datos');
         if(usuario === 'admin@admin.com' && password === 'admin12345'){
-            navigate('/admin/donantes');
+            navigate('/admin/usuarios');
         }
     }
 

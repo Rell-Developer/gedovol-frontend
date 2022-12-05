@@ -6,6 +6,7 @@ import { useState } from 'react'
 import Login from './paginas/publicas/Login.jsx'
 import Desarrolladores from './paginas/publicas/Desarrolladores.jsx'
 import RutaProtegida from './Layout/RutaProtegida.jsx';
+import Error404 from './paginas/publicas/Error404.jsx';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
           <Route path="/">
             <Route index element={<Login/>}/>
             <Route path="/desarrolladores" element={<Desarrolladores/>}/>
-            <Route path='/admin/donantes' element={<RutaProtegida/>}/>
+            <Route path='/admin/usuarios' element={<RutaProtegida/>}/>
+            <Route path='*' element={<Error404/>}/>
           </Route>
 
           {/* <Route path='/admin'>
