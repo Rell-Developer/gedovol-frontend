@@ -5,10 +5,9 @@ import { useState } from 'react'
 // Paginas Públicas
 import Login from './paginas/publicas/Login.jsx'
 import Desarrolladores from './paginas/publicas/Desarrolladores.jsx'
+import RutaProtegida from './Layout/RutaProtegida.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <BrowserRouter>
@@ -17,7 +16,12 @@ function App() {
           <Route path="/">
             <Route index element={<Login/>}/>
             <Route path="/desarrolladores" element={<Desarrolladores/>}/>
+            <Route path='/admin/donantes' element={<RutaProtegida/>}/>
           </Route>
+
+          {/* <Route path='/admin'>
+            <Route/>
+          </Route> */}
         </Routes>
       </BrowserRouter>
     </>

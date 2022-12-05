@@ -1,0 +1,27 @@
+/* Utilidades */
+/* Modal*/
+#custom-modal{
+    transition: all .75s;
+}
+
+.cerrar-modal{
+    transform: translateY(-600px);
+}
+
+.mostrar-modal{
+    transform: translateY(40px);
+}
+
+/* Mensaje de Alerta */
+/* #alerta-div{
+    transition: all .5s;
+    /* opacity: 0; 
+}
+
+.esconder-alerta{
+    opacity: 0;
+}
+
+.mostrar-alerta{
+    opacity: 1;
+/* }  */
