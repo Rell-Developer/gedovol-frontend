@@ -41,6 +41,7 @@ const Login = () => {
             // Realizando Peticion
             let {data} = await clienteAxios.post('/usuario/login', {usuario, password});
 
+            console.log(data)
             //Si existe algun error en la consulta
             if(data.error){
                 // Se crea el mensaje de error
