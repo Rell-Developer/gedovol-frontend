@@ -9,7 +9,7 @@ const Navegador = () => {
     const cerrarSesion = () => {
 
         // Borrando el token del localStorage
-        localStorage.removeItem('token');
+        localStorage.removeItem('data');
 
         // Redigiriendo a la ruta principal pública , el cual es el login
         navigate('/');

@@ -37,16 +37,28 @@ const Login = () => {
             return
         }
 
-        try {
-            
+        try {            
             // Realizando Peticion
             let {data} = await clienteAxios.post('/usuario/login', {usuario, password});
 
-            console.log(resultado);
+            //Si existe algun error en la consulta
+            if(data.error){
+                // Se crea el mensaje de error
+                setAlerta({error: true, msg: data.message});
 
+                // Luego de tres segundos se esconde
+                setTimeout(() => setAlerta({}), 3000);
+                return
+            }
+
+            // Guardado en el localStorage en caso de que ingrese el usuario
+            localStorage.setItem('data', JSON.stringify(data));
+            navigate('/admin/usuarios');
         } catch (error) {
             console.log(error.message);
+            return
         }
+
         // Pasa la validacion
         console.log('Buscando en la base de datos');
         if(usuario === 'admin@admin.com' && password === 'admin12345'){

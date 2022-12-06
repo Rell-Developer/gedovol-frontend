@@ -1,11 +1,33 @@
-import React from 'react'
+// Importaciones
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import UsuarioModal from '../../components/UsuarioModal.jsx';
 
-const Docentes = () => {
+// Componentes
+import UsuarioModal from '../../components/UsuarioModal.jsx';
+import Usuario from '../../components/Usuario.jsx';
+import clienteAxios from '../../config/axios.jsx';
+
+const Usuarios = () => {
+
+    // Arreglo de usuarios
+    let users = [];
 
     // Declarando el navegador
     const navigate = useNavigate();
+
+    useEffect(() =>{
+        buscarUsuariosDB();
+    },[])
+
+    const buscarUsuariosDB = async() =>{
+
+        try {
+            let {data} = await clienteAxios('/usuario/obtener-usuarios');
+            users = data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const clickFila = (e) =>{
         console.log('Llegando');
@@ -185,6 +207,7 @@ const Docentes = () => {
                                         Administrador
                                     </td>
                                 </tr>
+
                                 <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="2" onClick={e => clickFila(e.target)}>
                                     <td className='p-1 border-x border-y border-black'>
                                         Fernando Gabriel
@@ -251,4 +274,4 @@ const Docentes = () => {
     )
 }
 
-export default Docentes
+export default Usuarios
