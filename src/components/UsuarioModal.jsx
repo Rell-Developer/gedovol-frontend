@@ -82,7 +82,7 @@ const UsuarioModal = () => {
             let {data} = await clienteAxios.post('/usuario/registrar-usuario', {usuario, cedula, password, rol});
 
             // console.log('resultado');
-            // console.log(resultado);
+            // console.log(resultado);    
 
             if(data.error){
                 setAlerta({error:true, msg: data.message});
