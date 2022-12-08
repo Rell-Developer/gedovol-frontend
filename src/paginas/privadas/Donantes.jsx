@@ -2,16 +2,15 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-
-//conexion Api 
+// Componentes
+/* import UsuarioModal from '../../components/UsuarioModal.jsx';
+import Usuario from '../../components/Usuario.jsx'; */
 import clienteAxios from '../../config/axios.jsx';
-
-
 
 const Donantes = () => {
 
     // Arreglo de usuarios
-    let users = [];
+    let donantes = [];
 
     // Declarando el navegador
     const navigate = useNavigate();
@@ -117,7 +116,7 @@ const Donantes = () => {
     return (
         <>
             <div className='w-full flex flex-col bg-white'>
-                
+                {/* <UsuarioModal/> */}
                 {/* Contenedor Superior */}
                 <div className='w-full flex justify-evenly py-5 my-5'>
                     {/* Titulo */}
@@ -147,7 +146,7 @@ const Donantes = () => {
 
                         <input 
                             type="button" 
-                            value="Nuevo Usuario" 
+                            value="Nuevo Donante" 
                             className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
                             onClick={mostrarModal}
                             />
@@ -162,20 +161,90 @@ const Donantes = () => {
                         {/* titulo */}
                         <div>
                             <h3 className='text-2xl font-bold'>
-                                Tipo de Vista
+                                Filtros
                             </h3>
                         </div>
 
-                        {/* Tipo de Vista */}
+                        {/* filtro por sexo */}
+                        <div>
+                            <h3 className='text-lg'>
+                                Por Sexo
+                            </h3>
+                        </div>
                         <div className='py-1 my-1 ml-5 w-5/6'>
                             <div className='flex justify-start flex-col'>
                                 <div>
-                                    <input type="radio" name="tipoVista" id="tableRadio"  />
-                                    <label htmlFor="tableRadio"> Tabla</label>
+                                    <input type="checkbox" name="filtroSexo" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> Mujer</label>
                                 </div>
                                 <div>
-                                    <input type="radio" name="tipoVista" id="cardsRadio" />
-                                    <label htmlFor="cardsRadio"> Tarjetas</label>
+                                    <input type="checkbox" name="filtroSexo" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> Hombre</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className='text-lg text-right'>
+                                Por Tipo de sangre
+                            </h3>
+                        </div>
+                        
+                       <div className='my-1 ml-5 w-5/6 flex'>
+                            <div className='flex justify-start flex-col mx-4 '>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> A+</label>
+                                </div>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> O+</label>
+                                </div>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> B+</label>
+                                </div>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> AB+</label>
+                                </div>
+                            </div>
+                            
+                            <div className='flex justify-start flex-col'>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> A-</label>
+                                </div>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> O-</label>
+                                </div>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> B-</label>
+                                </div>
+                                <div className=''>
+                                    <input type="checkbox" name="tipoVista" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> AB-</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <div>
+                            <h3 className='text-lg'>
+                                Por Estado
+                            </h3>
+                        </div>
+                        <div className='py-1 my-1 ml-5 w-5/6'>
+                            <div className='flex justify-start flex-col'>
+                                <div>
+                                    <input type="checkbox" name="filtroSexo" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> Apto</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="filtroSexo" id="tableRadio"  />
+                                    <label htmlFor="tableRadio" className='font-semibold'> No Apto</label>
                                 </div>
                             </div>
                         </div>
@@ -187,76 +256,171 @@ const Donantes = () => {
                             <thead className='p-4 text-white'>
                                 <tr>
                                     <th className='p-4 border-x border-black'>
-                                        Usuario
+                                        Nombre
                                     </th>
                                     <th className='p-4 border-x border-black'>
+                                        Apellido
+                                    </th>
+                                    <th className='border-x border-black'>
                                         Cedula
                                     </th>
                                     <th className='border-x border-black'>
-                                        Rol
+                                        Tipo de sangre
+                                    </th>
+                                    <th className='border-x border-black'>
+                                        Sexo
+                                    </th>
+                                    <th className='border-x border-black'>
+                                        Estatus
                                     </th>
                                 </tr>
                             </thead>
                             <tbody className='text-center p-4'>
-                                <Usuario
+                           {/*      <Usuario
                                     usuario={buscarUsuariosDB()}
-                                />
+                                /> */}
 
                                 <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
                                     <td className='p-1 border-x border-y border-black'>
-                                        Roque Emilio
+                                        Roque
                                     </td>
                                     <td className='border-x border-y border-black campoCedula'>
-                                        28124589
+                                        Emilio
                                     </td>
                                     <td className='border-x border-y border-black'>
-                                        Administrador
+                                        28012038
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        O+
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        H
+                                    </td>
+                                    <td className='border-x border-y border-black text-red-600'>
+                                        Apto
                                     </td>
                                 </tr>
-
-                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="2" onClick={e => clickFila(e.target)}>
+                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
                                     <td className='p-1 border-x border-y border-black'>
-                                        Fernando Gabriel
+                                        Roque
                                     </td>
                                     <td className='border-x border-y border-black campoCedula'>
-                                        9865321
+                                        Emilio
                                     </td>
                                     <td className='border-x border-y border-black'>
-                                        Secretario
+                                        28012038
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        O+
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        H
+                                    </td>
+                                    <td className='border-x border-y border-black text-red-600'>
+                                        Apto
                                     </td>
                                 </tr>
-                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="3" onClick={e => clickFila(e.target)}>
+                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
                                     <td className='p-1 border-x border-y border-black'>
-                                        Maria Jose
+                                        Roque
                                     </td>
                                     <td className='border-x border-y border-black campoCedula'>
-                                        124578
+                                        Emilio
                                     </td>
                                     <td className='border-x border-y border-black'>
-                                        Visitante
-                                    </td>
-                                </tr><tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="4" onClick={e => clickFila(e.target)}>
-                                    <td className='p-1 border-x border-y border-black'>
-                                        Teodoro Emilio
-                                    </td>
-                                    <td className='border-x border-y border-black campoCedula'>
-                                        9865321
+                                        28012038
                                     </td>
                                     <td className='border-x border-y border-black'>
-                                        Administrador
+                                        O+
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        H
+                                    </td>
+                                    <td className='border-x border-y border-black text-red-600'>
+                                        Apto
                                     </td>
                                 </tr>
-                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="5" onClick={e => clickFila(e.target)}>
+                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
                                     <td className='p-1 border-x border-y border-black'>
-                                        Karla Julieta
+                                        Roque
                                     </td>
                                     <td className='border-x border-y border-black campoCedula'>
-                                        124578
+                                        Emilio
                                     </td>
                                     <td className='border-x border-y border-black'>
-                                        Secretario
+                                        28012038
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        O+
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        H
+                                    </td>
+                                    <td className='border-x border-y border-black text-red-600'>
+                                        Apto
                                     </td>
                                 </tr>
+                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
+                                    <td className='p-1 border-x border-y border-black'>
+                                        Roque
+                                    </td>
+                                    <td className='border-x border-y border-black campoCedula'>
+                                        Emilio
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        28012038
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        O+
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        H
+                                    </td>
+                                    <td className='border-x border-y border-black text-red-600'>
+                                        Apto
+                                    </td>
+                                </tr>
+                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
+                                    <td className='p-1 border-x border-y border-black'>
+                                        Roque
+                                    </td>
+                                    <td className='border-x border-y border-black campoCedula'>
+                                        Emilio
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        28012038
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        O+
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        H
+                                    </td>
+                                    <td className='border-x border-y border-black text-red-600'>
+                                        Apto
+                                    </td>
+                                </tr>
+                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
+                                    <td className='p-1 border-x border-y border-black'>
+                                        Roque
+                                    </td>
+                                    <td className='border-x border-y border-black campoCedula'>
+                                        Emilio
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        28012038
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        O+
+                                    </td>
+                                    <td className='border-x border-y border-black'>
+                                        H
+                                    </td>
+                                    <td className='border-x border-y border-black text-red-600'>
+                                        Apto
+                                    </td>
+                                </tr>
+                                
                             </tbody>
                         </table>
                         <div id="sinResultados" className='mx-auto hidden justify-center items-center flex-col text-center w-1/2 bg-white'>
