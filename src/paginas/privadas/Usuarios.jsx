@@ -24,6 +24,7 @@ const Usuarios = () => {
         try {
             let {data} = await clienteAxios('/usuario/obtener-usuarios');
             users = data;
+            return data
         } catch (error) {
             console.log(error);
         }
@@ -196,6 +197,10 @@ const Usuarios = () => {
                                 </tr>
                             </thead>
                             <tbody className='text-center p-4'>
+                                <Usuario
+                                    usuario={buscarUsuariosDB()}
+                                />
+
                                 <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
                                     <td className='p-1 border-x border-y border-black'>
                                         Roque Emilio

@@ -4,9 +4,8 @@ import { useEffect } from 'react'
 const Usuario = ({usuario}) => {
 
     useEffect(()=>{
-        setTimeout(() => {
-            console.log(usuario);
-        }, 3000);
+
+        console.log(usuario[0]);
     },[]);
 
     return (
