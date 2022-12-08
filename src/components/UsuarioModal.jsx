@@ -126,7 +126,7 @@ const UsuarioModal = () => {
                                     </label>
                                     <input 
                                         className='bg-white p-1 text-sm rounded-lg border-4 border-gray-200' 
-                                        placeholder='Ingrese su Cedula' 
+                                        placeholder='Ingrese su Cedula. Ejemplo: 20123456' 
                                         type="number" 
                                         autoComplete='off'
                                         min="1"
