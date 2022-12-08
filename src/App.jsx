@@ -22,6 +22,7 @@ function App() {
               <Route index element={<Login/>}/>
               <Route path="/desarrolladores" element={<Desarrolladores/>}/>
               <Route path='/admin/usuarios' element={<RutaProtegida/>}/>
+              <Route path='/admin/donantes' element={<RutaProtegida/>}/>
               <Route path='*' element={<Error404/>}/>
             </Route>
 
