@@ -5,6 +5,9 @@ import clienteAxios from '../config/axios.jsx';
 // Compontentes
 import Alerta from './Alerta.jsx';
 
+// Hooks
+import useUsuarios from '../hooks/useUsuarios.jsx';
+
 const UsuarioModal = () => {
 
     // UseStates
@@ -15,6 +18,9 @@ const UsuarioModal = () => {
 
     // Componente Alerta
     const [alerta, setAlerta] = useState({});
+
+    // Hooks
+    // const {guardarUsuario} = useUsuarios();
 
     // Funcion para cerrar el modal
     const cerrarModal = () =>{
@@ -65,13 +71,18 @@ const UsuarioModal = () => {
             return
         }
 
+        // Guardando al usuario
+        // Con hooks
+        // guardarUsuario({usuario, cedula, password, rol});
+        
+        // Sin hooks
         try {
             
             // Peticion http
             let {data} = await clienteAxios.post('/usuario/registrar-usuario', {usuario, cedula, password, rol});
 
             // console.log('resultado');
-            // console.log(resultado);
+            // console.log(resultado);    
 
             if(data.error){
                 setAlerta({error:true, msg: data.message});

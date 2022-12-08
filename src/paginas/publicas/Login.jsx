@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import clienteAxios from '../../config/axios.jsx';
 
+// Hooks y Context
+import useAuth from '../../hooks/useAuth.jsx';
+
 // Componentes
 import Footer from '../../components/Footer';
 import Alerta from '../../components/Alerta';
@@ -14,11 +17,15 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [alerta, setAlerta] = useState({});
     
+    // Hooks
+    const {auth, setAuth} = useAuth();
+
     // Mensaje de Alerta
     const {msg} = alerta
 
     // Decalarando el navegador
     const navigate = useNavigate();
+
 
     // Funciones
     const handleSubmit = async (e) =>{
@@ -40,7 +47,7 @@ const Login = () => {
         try {            
             // Realizando Peticion
             let {data} = await clienteAxios.post('/usuario/login', {usuario, password});
-            
+
             //Si existe algun error en la consulta
             if(data.error){
                 // Se crea el mensaje de error
@@ -61,9 +68,24 @@ const Login = () => {
 
         // Pasa la validacion
         console.log('Buscando en la base de datos');
-        if(usuario === 'admin@admin.com' && password === 'admin12345'){
-            navigate('/admin/usuarios');
+        // if(usuario === 'admin@admin.com' && password === 'admin12345'){
+        //     navigate('/admin/usuarios');
+        // }
+    }
+
+    // Verificar si tiene sesion
+    const tieneSesion = () =>{
+
+        let data = JSON.parse(localStorage.getItem('data'));
+
+        if(data.token){
+            setAuth(data);
+            navigate('/admin');
         }
+    }
+
+    if(localStorage.getItem('data')){
+        tieneSesion();
     }
 
     // Retorno de Contenido
