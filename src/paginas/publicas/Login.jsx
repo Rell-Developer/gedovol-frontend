@@ -41,7 +41,6 @@ const Login = () => {
             // Realizando Peticion
             let {data} = await clienteAxios.post('/usuario/login', {usuario, password});
 
-            console.log(data)
             //Si existe algun error en la consulta
             if(data.error){
                 // Se crea el mensaje de error
@@ -62,9 +61,9 @@ const Login = () => {
 
         // Pasa la validacion
         console.log('Buscando en la base de datos');
-        if(usuario === 'admin@admin.com' && password === 'admin12345'){
-            navigate('/admin/usuarios');
-        }
+        // if(usuario === 'admin@admin.com' && password === 'admin12345'){
+        //     navigate('/admin/usuarios');
+        // }
     }
 
     // Retorno de Contenido
