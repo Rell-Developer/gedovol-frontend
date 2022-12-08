@@ -5,6 +5,9 @@ import clienteAxios from '../config/axios.jsx';
 // Compontentes
 import Alerta from './Alerta.jsx';
 
+// Hooks
+import useUsuarios from '../hooks/useUsuarios.jsx';
+
 const UsuarioModal = () => {
 
     // UseStates
@@ -15,6 +18,9 @@ const UsuarioModal = () => {
 
     // Componente Alerta
     const [alerta, setAlerta] = useState({});
+
+    // Hooks
+    // const {guardarUsuario} = useUsuarios();
 
     // Funcion para cerrar el modal
     const cerrarModal = () =>{
@@ -65,6 +71,11 @@ const UsuarioModal = () => {
             return
         }
 
+        // Guardando al usuario
+        // Con hooks
+        // guardarUsuario({usuario, cedula, password, rol});
+        
+        // Sin hooks
         try {
             
             // Peticion http
@@ -126,7 +137,7 @@ const UsuarioModal = () => {
                                     </label>
                                     <input 
                                         className='bg-white p-1 text-sm rounded-lg border-4 border-gray-200' 
-                                        placeholder='Ingrese su Cedula' 
+                                        placeholder='Ingrese su Cedula. Ejemplo: 20123456' 
                                         type="number" 
                                         autoComplete='off'
                                         min="1"

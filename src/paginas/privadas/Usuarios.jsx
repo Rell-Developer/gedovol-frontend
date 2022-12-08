@@ -7,10 +7,18 @@ import UsuarioModal from '../../components/UsuarioModal.jsx';
 import Usuario from '../../components/Usuario.jsx';
 import clienteAxios from '../../config/axios.jsx';
 
+// Hooks
+import useUsuarios from '../../hooks/useUsuarios.jsx';
+
 const Usuarios = () => {
 
     // Arreglo de usuarios
     let users = [];
+
+    // Usuarios
+    // const {usuarios, guardarUsuario} = useUsuarios();
+
+    // console.log(usuarios)
 
     // Declarando el navegador
     const navigate = useNavigate();
@@ -24,6 +32,7 @@ const Usuarios = () => {
         try {
             let {data} = await clienteAxios('/usuario/obtener-usuarios');
             users = data;
+            return data
         } catch (error) {
             console.log(error);
         }
@@ -112,6 +121,46 @@ const Usuarios = () => {
         modal.classList.add('mostrar-modal');
     }
 
+    const mostrarUsuarios = async() =>{
+
+        const tablaUsuarios = document.querySelector('#body-table-usuarios');
+
+        while(tablaUsuarios.firstChild){
+            tablaUsuarios.removeChild(tablaUsuarios.firstChild);
+        }
+
+        let usuarios = await buscarUsuariosDB();
+        console.log(usuarios);
+
+        usuarios.forEach( datos => {
+
+            
+            let row = document.createElement('tr');
+            row.classList.add('bg-gray-200');
+            row.classList.add('hover:bg-gray-300');
+            row.classList.add('cursor-pointer');
+            row.setAttribute('data-id', datos.id);
+            
+            // console.log(datos);
+            let contenido = document.createElement('div');
+            row.innerHTML = `
+                <td className='p-1 border-x border-y border-black'>
+                    ${datos.usuario}
+                </td>
+                <td className='border-x border-y border-black campoCedula'>
+                    ${datos.cedula}
+                </td>
+                <td className='border-x border-y border-black'>
+                    ${datos.rol}
+                </td>
+            `
+
+            row.appendChild(contenido);
+            tablaUsuarios.appendChild(row);
+            // console.log('agregando');
+        })
+    }
+
     return (
         <>
             <div className='w-full flex flex-col bg-white'>
@@ -148,6 +197,14 @@ const Usuarios = () => {
                             value="Nuevo Usuario" 
                             className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
                             onClick={mostrarModal}
+                            />
+
+                            
+                        <input 
+                            type="button" 
+                            value="Mostrar Todos los Usuarios"
+                            className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
+                            onClick={mostrarUsuarios}
                             />
                     </div>
 
@@ -195,62 +252,10 @@ const Usuarios = () => {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className='text-center p-4'>
-                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="1" onClick={e => clickFila(e.target)}>
-                                    <td className='p-1 border-x border-y border-black'>
-                                        Roque Emilio
-                                    </td>
-                                    <td className='border-x border-y border-black campoCedula'>
-                                        28124589
-                                    </td>
-                                    <td className='border-x border-y border-black'>
-                                        Administrador
-                                    </td>
-                                </tr>
-
-                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="2" onClick={e => clickFila(e.target)}>
-                                    <td className='p-1 border-x border-y border-black'>
-                                        Fernando Gabriel
-                                    </td>
-                                    <td className='border-x border-y border-black campoCedula'>
-                                        9865321
-                                    </td>
-                                    <td className='border-x border-y border-black'>
-                                        Secretario
-                                    </td>
-                                </tr>
-                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="3" onClick={e => clickFila(e.target)}>
-                                    <td className='p-1 border-x border-y border-black'>
-                                        Maria Jose
-                                    </td>
-                                    <td className='border-x border-y border-black campoCedula'>
-                                        124578
-                                    </td>
-                                    <td className='border-x border-y border-black'>
-                                        Visitante
-                                    </td>
-                                </tr><tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="4" onClick={e => clickFila(e.target)}>
-                                    <td className='p-1 border-x border-y border-black'>
-                                        Teodoro Emilio
-                                    </td>
-                                    <td className='border-x border-y border-black campoCedula'>
-                                        9865321
-                                    </td>
-                                    <td className='border-x border-y border-black'>
-                                        Administrador
-                                    </td>
-                                </tr>
-                                <tr className=' bg-gray-200 hover:bg-gray-300 cursor-pointer' data-id="5" onClick={e => clickFila(e.target)}>
-                                    <td className='p-1 border-x border-y border-black'>
-                                        Karla Julieta
-                                    </td>
-                                    <td className='border-x border-y border-black campoCedula'>
-                                        124578
-                                    </td>
-                                    <td className='border-x border-y border-black'>
-                                        Secretario
-                                    </td>
-                                </tr>
+                            <tbody id="body-table-usuarios" className='text-center p-4'>
+                                {/* <Usuario
+                                    usuario={buscarUsuariosDB()}
+                                /> */}
                             </tbody>
                         </table>
                         <div id="sinResultados" className='mx-auto hidden justify-center items-center flex-col text-center w-1/2 bg-white'>
