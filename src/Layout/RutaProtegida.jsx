@@ -1,5 +1,6 @@
 import Navegador from '../components/Navegador.jsx';
 import Usuarios from '../paginas/privadas/Usuarios.jsx';
+import Donantes from '../paginas/privadas/Donantes.jsx';
 import Footer from '../components/Footer.jsx';
 
 
@@ -22,6 +23,7 @@ const RutaProtegida = () => {
                 <Navegador/>
                 <div className='flex flex-col w-full bg-white'>
                     <div style={{height: "90vh"}}>
+                    
                         {auth?.token ? <Outlet />: <Navigate to="/" />}
                     </div>
                     <div style={{height: "10vh"}}>
