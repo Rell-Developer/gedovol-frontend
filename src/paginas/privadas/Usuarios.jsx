@@ -124,6 +124,7 @@ const Usuarios = () => {
     const mostrarUsuarios = async() =>{
 
         const tablaUsuarios = document.querySelector('#body-table-usuarios');
+        const contenedorCartas = document.querySelector('#content-cards');
 
         while(tablaUsuarios.firstChild){
             tablaUsuarios.removeChild(tablaUsuarios.firstChild);
@@ -140,6 +141,11 @@ const Usuarios = () => {
             row.classList.add('hover:bg-gray-300');
             row.classList.add('cursor-pointer');
             row.setAttribute('data-id', datos.id);
+
+            contenedorCartas.classList.add('bg-gray-200');
+            contenedorCartas.classList.add('hover:bg-gray-300');
+            contenedorCartas.classList.add('cursor-pointer');
+            contenedorCartas.setAttribute('data-id', datos.id);
             
             // console.log(datos);
             let contenido = document.createElement('div');
@@ -155,8 +161,28 @@ const Usuarios = () => {
                 </td>
             `
 
-            row.appendChild(contenido);
+            contenedorCartas.innerHTML = `
+                <div class='w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
+                    <div class='flex justify-center py-5'>
+                        <img src="/img/avatar-masculino.png" alt="avatar masculino" class='w-1/2' />
+                    </div>
+                    <div>
+                        <p class='text-color2'>
+                            Usuario: <span class='font-normal text-black'>${datos.usuario}</span>
+                        </p>
+                        <p class='text-color2'>
+                            Cedula: <span class='font-normal text-black'>${datos.cedula}</span>
+                        </p>
+                        <p class='text-color2'>
+                            Rol: <span class='font-normal text-black'>${datos.rol}</span>
+                        </p>
+                    </div>
+                </div>
+            `
+
+            // row.appendChild(contenido);
             tablaUsuarios.appendChild(row);
+            
             // console.log('agregando');
         })
     }
@@ -271,6 +297,13 @@ const Usuarios = () => {
                                 className='py-2 bg-color3 hover:bg-color2 transition-all rounded-lg font-bold w-1/2 text-white shadow-lg cursor-pointer'
                                 onClick={aparecerTodos}
                                 />
+                        </div>
+                    </div>
+
+                    {/* Tarjetas */}
+                    <div id="content-cards" className='w-5/6 hidden'>
+                        <div className='m-5 w-5/6'>
+
                         </div>
                     </div>
                 </div>

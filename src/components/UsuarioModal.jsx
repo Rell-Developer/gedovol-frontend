@@ -13,6 +13,7 @@ const UsuarioModal = () => {
     // UseStates
     const [usuario, setUsuario] = useState('');
     const [cedula, setCedula] = useState('');
+    const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
     const [rol, setRol] = useState('');
 
@@ -31,6 +32,7 @@ const UsuarioModal = () => {
         // Estableciendo valores nulos a los campos
         setUsuario('');
         setCedula('');
+        setCorreo('');
         setPassword('');
         setRol('');
 
@@ -48,7 +50,7 @@ const UsuarioModal = () => {
         // const mensaje = document.querySelector('#alerta-div');
 
         // Verificacion de los campos vacios
-        if(usuario === '' || cedula === '' || password === '' || rol === ''){            
+        if(usuario === '' || cedula === '' || correo== '' || password === '' || rol === ''){            
             // Establece el valor del mensaje de alerta
             setAlerta({msg: 'Todos los campos son obligatorios', error: true});
 
@@ -79,7 +81,7 @@ const UsuarioModal = () => {
         try {
             
             // Peticion http
-            let {data} = await clienteAxios.post('/usuario/registrar-usuario', {usuario, cedula, password, rol});
+            let {data} = await clienteAxios.post('/usuario/registrar-usuario', {usuario, cedula, correo, password, rol});
 
             // console.log('resultado');
             // console.log(resultado);    
@@ -87,6 +89,15 @@ const UsuarioModal = () => {
             if(data.error){
                 setAlerta({error:true, msg: data.message});
             }else{
+
+                // Estableciendo valores nulos a los campos
+                setUsuario('');
+                setCedula('');
+                setCorreo('');
+                setPassword('');
+                setRol('');
+
+                // Mostrando mensaje
                 setAlerta({msg: data.message});
             }
 
@@ -143,6 +154,26 @@ const UsuarioModal = () => {
                                         min="1"
                                         value={cedula}
                                         onChange={e => setCedula(e.target.value)}
+                                        />
+                                </div>
+
+                                <div className='flex flex-col py-2'>
+                                    <label htmlFor="" className='text-white font-bold py-2 flex items-center'>
+                                        {/* <svg className="w-6 h-6 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg> */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" className="w-6 h-6">
+                                            <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                                            <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                                        </svg>
+
+                                        Correo Electronico
+                                    </label>
+                                    <input 
+                                        className='bg-white p-1 text-sm rounded-lg border-4 border-gray-200' 
+                                        placeholder='Ingrese el correo electronico' 
+                                        type="email" 
+                                        autoComplete='off'
+                                        value={correo}
+                                        onChange={e => setCorreo(e.target.value)}
                                         />
                                 </div>
 
