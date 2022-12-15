@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 // Componentes
+import DonanteModal from '../../components/DonanteModal.jsx';
 /* import UsuarioModal from '../../components/UsuarioModal.jsx';
 import Usuario from '../../components/Usuario.jsx'; */
 import clienteAxios from '../../config/axios.jsx';
@@ -118,6 +119,7 @@ const Donantes = () => {
             <div className='w-full flex flex-col bg-white'>
                 {/* <UsuarioModal/> */}
                 {/* Contenedor Superior */}
+                <DonanteModal/>
                 <div className='w-full flex justify-evenly py-5 my-5'>
                     {/* Titulo */}
                     <div className="text-center font-bold text-color2">
