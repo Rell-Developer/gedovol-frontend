@@ -91,11 +91,11 @@ const UsuarioModal = () => {
             }else{
 
                 // Estableciendo valores nulos a los campos
-                setUsuario('');
-                setCedula('');
-                setCorreo('');
-                setPassword('');
-                setRol('');
+                // setUsuario('');
+                // setCedula('');
+                // setCorreo('');
+                // setPassword('');
+                // setRol('');
 
                 // Mostrando mensaje
                 setAlerta({msg: data.message});

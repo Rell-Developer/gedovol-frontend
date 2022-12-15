@@ -60,7 +60,7 @@ const Login = () => {
 
             // Guardado en el localStorage en caso de que ingrese el usuario
             localStorage.setItem('data', JSON.stringify(data));
-            navigate('/admin/usuarios');
+            navigate('/admin');
         } catch (error) {
             console.log(error.message);
             return
@@ -84,9 +84,9 @@ const Login = () => {
         }
     }
 
-    if(localStorage.getItem('data')){
-        tieneSesion();
-    }
+    // if(localStorage.getItem('data')){
+    //     tieneSesion();
+    // }
 
     // Retorno de Contenido
     return (
