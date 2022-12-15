@@ -10,7 +10,7 @@ const Error404 = () => {
         <>
             {/* Encabezado */}
             <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
-                <Link to="/admin/usuarios" className='items-center flex'>
+                <Link to="/admin" className='items-center flex'>
                     <div className='flex items-center'>
                             <img src="/img/logo-blanco.png" alt="logo" className="w-1/6"/>
                             <h2 className='mx-2 text-white font-bold text-4xl'>
@@ -53,7 +53,7 @@ const Error404 = () => {
 
                     {/* Boton de Retorno */}
                     <Link
-                        to="/admin/usuarios"
+                        to="/admin"
                     >
                         <button
                             className='ml-5 mt-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow-lg transition-all' 

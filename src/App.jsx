@@ -4,12 +4,13 @@ import { useState } from 'react'
 
 // Context
 import { AuthProvider } from './context/AuthProvider.jsx';
-import { UsuariosProvider } from './context/usuariosProvider.jsx';
+// import { UsuariosProvider } from './context/usuariosProvider.jsx';
 
 // Paginas Públicas
 import Login from './paginas/publicas/Login.jsx'
 import Desarrolladores from './paginas/publicas/Desarrolladores.jsx'
 import RutaProtegida from './Layout/RutaProtegida.jsx';
+import ConfirmarCuenta from './paginas/publicas/ConfirmarCuenta.jsx';
 import Error404 from './paginas/publicas/Error404.jsx';
 
 // Paginas Privadas
@@ -27,7 +28,7 @@ function App() {
               <Route path="/">
                 <Route index element={<Login/>}/>
                 <Route path="desarrolladores" element={<Desarrolladores/>}/>
-                {/* <Route path='admin/usuarios' element={<RutaProtegida/>}/> */}
+                <Route path='confirmar/:token' element={<ConfirmarCuenta/>}/>
                 <Route path='*' element={<Error404/>}/>
               </Route>
 
