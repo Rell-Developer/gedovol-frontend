@@ -7,8 +7,8 @@ import clienteAxios from '../../config/axios.jsx';
 import useAuth from '../../hooks/useAuth.jsx';
 
 // Componentes
-import Footer from '../../components/Footer';
-import Alerta from '../../components/Alerta';
+import Footer from '../../components/publicos/Footer';
+import Alerta from '../../components/publicos/Alerta';
 
 const Login = () => {
 

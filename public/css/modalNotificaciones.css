@@ -1,0 +1,31 @@
+#modal-notificaciones{
+    height: 85vh;
+}
+
+#modal-notificaciones #contenedor-notificaciones{
+    background-color: rgba(240, 248, 255, 0.25);
+    border-radius: 5px;
+    height: 60vh;
+
+    overflow-x: hidden;
+}
+
+/* Scroll */
+#modal-notificaciones #contenedor-notificaciones::-webkit-scrollbar{
+
+    width: 8px;
+    height: 8px;
+    
+    /* background: linear-gradient(to top, rgba(27, 26, 23, 0.151), rgba(240, 227, 202, 0.1)); */
+}
+
+#modal-notificaciones #contenedor-notificaciones::-webkit-scrollbar-thumb{
+    
+    background-color: #D80404;
+    border-radius: 5px;
+}
+
+/* Utils */
+.posicion-despliegue-nav{
+    transform: translateX(100px);
+}

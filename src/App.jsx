@@ -16,6 +16,8 @@ import Error404 from './paginas/publicas/Error404.jsx';
 // Paginas Privadas
 import Usuarios from './paginas/privadas/Usuarios.jsx';
 import Donantes from './paginas/privadas/Donantes.jsx';
+import Perfil from './paginas/privadas/Perfil.jsx';
+import Notificaciones from './paginas/privadas/Notificaciones.jsx';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
               <Route path='/admin' element={<RutaProtegida/>}>
                 <Route index element={<Donantes/>}/>
                 <Route path='usuarios' element={<Usuarios/>}/>
+                <Route path='perfil' element={<Perfil/>}/>
+                <Route path='notificaciones' element={<Notificaciones/>}/>
               </Route>
             </Routes>
           {/* </UsuariosProvider> */}

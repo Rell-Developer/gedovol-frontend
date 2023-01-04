@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 // Componentes Publicos
-import Footer from '../../components/Footer'
+import Footer from '../../components/publicos/Footer.jsx'
 
 const Error404 = () => {
     return (

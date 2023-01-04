@@ -1,12 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
-import clienteAxios from '../config/axios.jsx';
+import clienteAxios from '../../config/axios.jsx';
 
 // Compontentes
-import Alerta from './Alerta.jsx';
+import Alerta from '../publicos/Alerta.jsx';
 
 // Hooks
-import useUsuarios from '../hooks/useUsuarios.jsx';
+import useUsuarios from '../../hooks/useUsuarios.jsx';
 
 const DonanteModal = () => {
 
@@ -137,7 +137,7 @@ const DonanteModal = () => {
                                             type="text" 
                                             autoComplete='off'
                                             value={usuario}
-                                            
+                                            onChange={e => setUsuario(e.target.value)}
                                             />
                                     </div>
 
@@ -151,7 +151,7 @@ const DonanteModal = () => {
                                             type="text" 
                                             autoComplete='off'
                                             value={usuario}
-                                            onChange={e => setUsuario(e.target.value)}
+                                            // onChange={e => setUsuario(e.target.value)}
                                             />
                                     </div>
 
@@ -165,7 +165,7 @@ const DonanteModal = () => {
                                             type="text" 
                                             autoComplete='off'
                                             value={usuario}
-                                            onChange={e => setUsuario(e.target.value)}
+                                            // onChange={e => setUsuario(e.target.value)}
                                             />
                                     </div>
                                     <div className='flex flex-col py-2 ml-5'>
@@ -178,7 +178,7 @@ const DonanteModal = () => {
                                             type="text" 
                                             autoComplete='off'
                                             value={usuario}
-                                            onChange={e => setUsuario(e.target.value)}
+                                            // onChange={e => setUsuario(e.target.value)}
                                             />
                                     </div>
                                    

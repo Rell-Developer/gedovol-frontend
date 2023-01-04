@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 // ===== Componentes =====
-import Alerta from '../../components/Alerta.jsx';
-import Footer from "../../components/Footer.jsx";
+import Alerta from '../../components/publicos/Alerta.jsx';
+import Footer from "../../components/publicos/Footer.jsx";
 import clienteAxios from "../../config/axios.jsx";
 
 const confirmarCuenta = () => {
@@ -11,13 +11,17 @@ const confirmarCuenta = () => {
     // useStates
     const [password, setPassword] = useState('');
     const [repetirPassword, setRepetirPassword] = useState('');
-    const [ tokenValido, settokenValido] = useState(false);
+    const [ tokenValido, settokenValido] = useState(null);
     const [mensajePantalla, setmensajePantalla] = useState('')
     
+    // useParams
     const params = useParams();
     const {token} = params;
     // console.log('El token en parametros')
     // console.log(token)
+
+    // useNavigate
+    const navigate = useNavigate();
     
     // === Componentes ===
     const [alerta, setAlerta] = useState({});
@@ -37,7 +41,7 @@ const confirmarCuenta = () => {
                     return
                 }
 
-                settokenValido(true);
+                // settokenValido(true);
             } catch (error) {
                 console.log(error.message)
             }
@@ -69,7 +73,7 @@ const confirmarCuenta = () => {
         }
 
         // Cambiando la contraseña
-        let {data} = await clienteAxios.put(`/usuario/cambiar-password`, {password, token});
+        let {data} = await clienteAxios.put(`/usuario/resetear-password`, {password, token});
 
         if(!data){
             setAlerta({msg:'Ha Ocurrido un Problema Interno', error: true});
@@ -82,6 +86,15 @@ const confirmarCuenta = () => {
         // }
 
         setAlerta({msg:data.message})
+        settokenValido(true);
+
+        // Se manda a crear la notificacion
+        let actualizado = await clienteAxios.put(`/notificacion/cuenta-confirmada`, {})
+
+        // Redirigiendo al inicio
+        setTimeout(() => {
+            navigate('/')
+        }, 10000);
     }
 
 
