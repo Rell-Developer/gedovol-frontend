@@ -89,7 +89,7 @@ const confirmarCuenta = () => {
         settokenValido(true);
 
         // Se manda a crear la notificacion
-        let actualizado = await clienteAxios.put(`/notificacion/cuenta-confirmada`, {})
+        let actualizado = await clienteAxios.put(`/notificacion/cuenta-confirmada`, {});
 
         // Redirigiendo al inicio
         setTimeout(() => {

@@ -11,6 +11,7 @@ import Login from './paginas/publicas/Login.jsx'
 import Desarrolladores from './paginas/publicas/Desarrolladores.jsx'
 import RutaProtegida from './Layout/RutaProtegida.jsx';
 import ConfirmarCuenta from './paginas/publicas/ConfirmarCuenta.jsx';
+import RecuperarPassword from './paginas/publicas/RecuperarPassword.jsx';
 import Error404 from './paginas/publicas/Error404.jsx';
 
 // Paginas Privadas
@@ -31,6 +32,7 @@ function App() {
                 <Route index element={<Login/>}/>
                 <Route path="desarrolladores" element={<Desarrolladores/>}/>
                 <Route path='confirmar/:token' element={<ConfirmarCuenta/>}/>
+                <Route path="recuperar-password/:token" element={<RecuperarPassword/>}/>
                 <Route path='*' element={<Error404/>}/>
               </Route>
 
