@@ -73,7 +73,7 @@ const confirmarCuenta = () => {
         }
 
         // Cambiando la contraseña
-        let {data} = await clienteAxios.put(`/usuario/resetear-password`, {password, token});
+        let {data} = await clienteAxios.put(`/usuario/resetear-password`, {password, token, accion: 'confirmacion-usuario'});
 
         if(!data){
             setAlerta({msg:'Ha Ocurrido un Problema Interno', error: true});

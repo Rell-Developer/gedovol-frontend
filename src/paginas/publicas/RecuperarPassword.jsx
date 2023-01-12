@@ -31,13 +31,12 @@ const RecuperarPassword = () => {
     useEffect(() => {
         const tokenVerify = async() => {
 
-            setTimeout(() => {
+            setTimeout(async() => {
                 // Obtenemos el token de los parametros
                 const {token} = params;
                 
                 // Peticion de http para obtener si el token existe o no
-                // let {data} = await clienteAxios(`/usuario/comprobar-token/${token}`);
-                let data = {error: true};
+                let {data} = await clienteAxios(`/usuario/buscar-token/${token}`);
     
                 // Si detecta un error
                 if(data.error){
@@ -86,26 +85,30 @@ const RecuperarPassword = () => {
             // se obtiene el token
             const {token} = params;
 
+            console.log('llegando al try catch')
+
             // Peticion http para formatear la contraseña
-            // let {data} = await clienteAxios.put('/usuario/resetear-password', {password, token});
-            let data = {error:false}
-
-            // Verificando si hay algun error
-            if(data.error){
-                setAlerta({msg: data.message, error:true});
-                setTimeout(() => setAlerta({}), 2500);
-                return
-            }
-
+            let {data} = await clienteAxios.put('/usuario/resetear-password', {password, token, accion: 'recuperacion-usuario'});
+            
+            // Colocando nulo el token para que salga la animacion del loading
             setTokenValido(null);
+            
             setTimeout(() => {
                 
+                // Verificando si hay algun error
+                if(data.error){
+                    setTokenValido(true);
+                    setAlerta({msg: data.message, error:true});
+                    setTimeout(() => setAlerta({}), 2500);
+                    return
+                }
+
                 document.querySelector('#formulario').classList.add('hidden');
                 document.querySelector('#spinner-heart').classList.add('hidden');
                 setRedireccion(true);
 
-                setTimeout(() => navigate('/'), 3000);
-            }, 2000);
+                setTimeout(() => navigate('/'), 5000);
+            }, 3000);
 
         } catch (error) {
             console.log(error.message);

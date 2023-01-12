@@ -2,7 +2,7 @@
 const RedHeartSpinner = () => {
     return (
         <>
-            <div class="lds-heart-red">
+            <div className="lds-heart-red">
                 <div></div>
             </div>
         </>

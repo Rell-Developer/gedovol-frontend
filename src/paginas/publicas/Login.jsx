@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import clienteAxios from '../../config/axios.jsx';
 
 // Hooks y Context
@@ -107,7 +107,7 @@ const Login = () => {
 
                 {/* Contenedor */}
                 <main className='w-full h-full bg-color1 flex justify-center items-center my-5'> 
-                    <div className='bg-color2 w-1/3 p-14 py-20 m-10 rounded-lg shadow-lg'>
+                    <div className='bg-color2 w-1/3 p-14 m-10 rounded-lg shadow-lg'>
                         <form onSubmit={handleSubmit}>
                             <div>
                                 <div className="text-center">
@@ -149,6 +149,15 @@ const Login = () => {
                             <div className='w-full mt-5 flex justify-center'>
                                 <input type="submit" value="Ingresar" className='w-3/4 bg-color4 text-white py-4 rounded-lg font-bold cursor-pointer'/>
                             </div>
+
+                            <p className='text-center mt-10 text-white'>
+                                ¿Olvidaste tu contraseña?,  
+                                <Link
+                                    to="/olvide-password"
+                                >
+                                    <span className='font-bold transition-all hover:text-pink-300'> Recuperala aquí.</span>
+                                </Link>
+                            </p>
                         </form>
                     </div>
                 </main>
