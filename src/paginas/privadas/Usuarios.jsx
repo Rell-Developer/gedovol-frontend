@@ -41,18 +41,6 @@ const Usuarios = () => {
         }
     }
 
-    // const clickFila = (e) =>{
-    //     console.log('Llegando');
-    //     console.log(e);
-
-    //     const modal = document.querySelector('#custom-modal');
-
-    //     if(!modal.classList.contains('mostrar-modal')){
-    //         let id = e.parentElement.getAttribute('data-id');
-    //         navigate(`/admin/perfil/${id}`);
-    //     }
-    // }
-
     const buscador = (buscarIndividual) =>{
 
         const modal = document.querySelector('#custom-modal');
@@ -236,7 +224,7 @@ const Usuarios = () => {
 
     return (
         <>
-            <div className='w-full flex flex-col bg-white'>
+            <div className='w-full flex flex-col'>
                 <UsuarioModal data={{statusModal, datosUsuario}}/>
                 {/* Contenedor Superior */}
                 <div className='w-full flex justify-evenly py-5 my-5'>
@@ -336,7 +324,7 @@ const Usuarios = () => {
                                 /> */}
                             </tbody>
                         </table>
-                        <div id="sinResultados" className='mx-auto hidden justify-center items-center flex-col text-center w-1/2 bg-white'>
+                        <div id="sinResultados" className='mx-auto hidden justify-center items-center flex-col text-center w-1/2 bg-white p-5 rounded-lg shadow'>
                             <h2 className='text-xl font-bold py-2'>
                                 No se Encontraron resultados de su busqueda.
                             </h2>

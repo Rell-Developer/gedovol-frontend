@@ -35,12 +35,12 @@ const RutaProtegida = () => {
                                 
                                     {data.token ? <Outlet />: <Navigate to="/" />}
                                     
-                                    <div className="w-5/6 bg-red flex justify-end absolute mt-3">
+                                    <div className={`${data.rol !== 'administrador' ? 'hidden' : ''} w-5/6 bg-red flex justify-end absolute mt-3`}>
                                         <ModalNotificaciones/>
                                     </div>
                                 </div>
                                 <div style={{height: "10vh"}}>
-                                    <div className="w-full bg-red flex justify-end">
+                                    <div className={`${data.rol !== 'administrador' ? 'hidden' : ''} w-full bg-red flex justify-end`}>
                                         <BurbujaNotificacion/>
                                     </div>
                                     <Footer/>   

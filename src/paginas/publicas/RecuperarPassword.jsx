@@ -85,8 +85,6 @@ const RecuperarPassword = () => {
             // se obtiene el token
             const {token} = params;
 
-            console.log('llegando al try catch')
-
             // Peticion http para formatear la contraseña
             let {data} = await clienteAxios.put('/usuario/resetear-password', {password, token, accion: 'recuperacion-usuario'});
             
