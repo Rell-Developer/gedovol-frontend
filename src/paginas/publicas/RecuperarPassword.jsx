@@ -131,19 +131,19 @@ const RecuperarPassword = () => {
                 <Header/>
 
                 {/* Contenido */}
-                <section className='w-full h-full bg-color1 flex justify-center items-center my-5' style={{height:"80vh"}}> 
-                    <div className='bg-color2 w-1/3 p-14 py-20 m-10 rounded-lg shadow-lg'>
+                <section className='w-full h-full bg-color1 lg:flex lg:justify-center lg:items-center my-5' style={{height:"80vh"}}> 
+                    <div className='bg-color2 py-4 w-5/6 lg:w-2/5 lg:p-14 mx-auto my-5 lg:m-10 rounded-xl shadow-lg'>
                         <form id="formulario" onSubmit={handleSubmit} className={`${tokenValido ? '':'hidden'}`}>
                             <div>
                                 <div className="text-center">
-                                    <h2 className='font-bold text-2xl text-white'>
+                                    <h2 className='font-bold text-xl lg:text-4xl text-white'>
                                         Recupere su Contraseña y no pierda su usuario
                                     </h2>
                                 </div>
 
-                                <div className='flex flex-col py-5'>
-                                    <label htmlFor="" className='text-white font-bold text-xl py-2 flex items-center'>
-                                        <svg className="w-8 h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>
+                                <div className='flex flex-col py-2 lg:py-5 w-5/6 mx-auto'>
+                                    <label htmlFor="" className='text-white font-bold lg:text-xl py-2 flex items-center'>
+                                        <svg className="w-6 h-6 lg:w-8 lg:h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>
                                         Nueva Contraseña
                                     </label>
                                     <input 
@@ -155,9 +155,9 @@ const RecuperarPassword = () => {
                                         />
                                 </div>
 
-                                <div className='flex flex-col py-5'>
-                                    <label htmlFor="" className='text-white font-bold text-xl py-2 flex items-center'>
-                                        <svg className="w-8 h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>
+                                <div className='flex flex-col py-2 lg:py-5 w-5/6 mx-auto'>
+                                    <label htmlFor="" className='text-white font-bold lg:text-xl py-2 flex items-center'>
+                                        <svg className="w-6 h-6 lg:w-8 lg:h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>
                                         Repita la Contraseña
                                     </label>
                                     <input 
@@ -171,7 +171,7 @@ const RecuperarPassword = () => {
                             </div>
 
                             <div className='w-full mt-5 flex justify-center'>
-                                <input type="submit" value="Ingresar" className='w-3/4 bg-color4 text-white py-4 rounded-lg font-bold cursor-pointer'/>
+                                <input type="submit" value="Ingresar" className='w-3/4 bg-color4 text-white py-2 lg:py-4 rounded-lg font-bold cursor-pointer'/>
                             </div>
                         </form>
 
@@ -189,7 +189,7 @@ const RecuperarPassword = () => {
                                 ):(
                                     <>
                                         <div className="mx-auto flex flex-col justify-center">
-                                            <h2 className="text-2xl uppercase font-bold">
+                                            <h2 className="text-2xl uppercase font-bold text-center">
                                                 Token Invalido o Inexistente
                                             </h2>
 
@@ -204,7 +204,7 @@ const RecuperarPassword = () => {
                                             <div className="mx-auto">
                                                 <button
                                                     type="button"
-                                                    className="bg-color1 py-2 px-4 text-black rounded-lg shadow mt-5 hover:bg-white transition-all"
+                                                    className="bg-color1 font-bold py-2 px-4 text-black rounded-lg shadow mt-5 hover:bg-white transition-all"
                                                     onClick={e => navigate('/')}
                                                 >
                                                     Regresar al Inicio
@@ -217,10 +217,10 @@ const RecuperarPassword = () => {
                         }
 
                         <div className={`${redireccion ? 'flex flex-col justify-center items-center content-center': 'hidden'}`}>
-                            <h2 className="text-3xl text-white font-bold text-center mb-2 uppercase">
+                            <h2 className="text-2xl lg:text-3xl text-white font-bold text-center mb-2 uppercase">
                                 Se ha recuperado tu contraseña con éxito
                             </h2>
-                            <h4 className="text-2xl text-white text-center">
+                            <h4 className="text-xl lg:text-2xl text-white text-center">
                                 Te redirigiremos al inicio en un momento
                             </h4>
 

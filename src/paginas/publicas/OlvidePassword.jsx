@@ -51,7 +51,7 @@ const OlvidePassword = () => {
                 if(data.error){
                     setAlerta({msg: data.message, error: true});
                     setTimeout(() => setAlerta({}), 2500);
-                    setSendEmail(true);
+                    setSendEmail(false);
                     return
                 }
     
@@ -73,20 +73,20 @@ const OlvidePassword = () => {
         
             { msg && <Alerta alerta={alerta}/>}
             {/* Contenedor */}
-            <section className='w-full h-full bg-color1 flex justify-center items-center my-5'> 
-                <div className='bg-color2 w-1/3 p-14 m-10 rounded-lg shadow-lg'>
+            <section className='w-full h-full bg-color1 lg:flex lg:justify-center lg:items-center my-5'> 
+                <div className='bg-color2 py-4 w-5/6 lg:w-2/5 lg:p-14 mx-auto my-5 lg:m-10 rounded-xl shadow-lg'>
                     { !sendEmail ? (
                         <form onSubmit={handleSubmit}>
                             <div>
                                 <div className="text-center">
-                                    <h2 className='font-bold text-4xl text-white'>
+                                    <h2 className='font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white'>
                                         Ingresa tu email para recuparar tu contraseña
                                     </h2>
                                 </div>
 
-                                <div className='flex flex-col py-5'>
-                                    <label htmlFor="" className='text-white font-bold text-xl py-2 flex items-center'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 flex mr-1">
+                                <div className='flex flex-col py-2 lg:py-5 w-5/6 mx-auto'>
+                                    <label htmlFor="" className='text-white font-bold lg:text-xl py-2 flex items-center'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 lg:w-8 lg:h-8 flex mr-1">
                                             <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
                                             <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
                                         </svg>
@@ -105,7 +105,7 @@ const OlvidePassword = () => {
                             </div>
 
                             <div className='w-full mt-5 flex justify-center'>
-                                <input type="submit" value="Ingresar" className='w-3/4 bg-color4 text-white py-4 rounded-lg font-bold cursor-pointer'/>
+                                <input type="submit" value="Ingresar" className='w-3/4 bg-color4 text-white py-2 lg:py-4 rounded-lg font-bold cursor-pointer'/>
                             </div>
                         </form>
                     ):(

@@ -1,10 +1,12 @@
 import React from 'react'
 import {Link} from 'react-router-dom';
 
+import Header from '../../components/publicos/Header.jsx';
+
 const Desarrolladores = () => {
     return (
         <>
-            <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
+            {/* <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
                 <Link to="/admin" className='items-center flex'>
                     <div className='flex items-center'>
                             <img src="/img/logo-blanco.png" alt="logo" className="w-1/6"/>
@@ -13,22 +15,25 @@ const Desarrolladores = () => {
                             </h2>
                     </div>
                 </Link>
-            </header>
+            </header> */}
+            {/* Encabezado */}
+            <Header />
+
             <div className='w-full pb-10'>
                 {/* Desarrolladores */}
                 <div className='w-full'>
                     {/* Titulo */}
                     <div className='w-full py-10'>
-                        <h1 className='text-4xl text-color2 font-bold text-center'>
+                        <h1 className='text-3xl lg:text-4xl text-color2 font-bold text-center'>
                             Desarrolladores
                         </h1>
                     </div>
 
                     {/* Tarjetas */}
-                    <div className='w-full flex justify-evenly'>
+                    <div className='w-full grid grid-cols-1 gap-4 lg:flex lg:justify-evenly'>
 
                         {/* Tarjeta 1 */}
-                        <div className='w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
+                        <div className='w-5/6 mx-auto lg:w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
                             <div className='flex justify-center py-5'>
                                 <img src="/img/avatar-masculino.png" alt="avatar masculino" className='w-1/2' />
                             </div>
@@ -57,7 +62,7 @@ const Desarrolladores = () => {
                         </div>
 
                         {/* Tarjeta 2 */}
-                        <div className='w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
+                        <div className='w-5/6 mx-auto lg:w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
                             <div className='flex justify-center py-5'>
                                 <img src="/img/avatar-femenino.png" alt="avatar femenino" className='w-1/2' />
                             </div>
@@ -84,7 +89,7 @@ const Desarrolladores = () => {
                         </div>
 
                         {/* Tarjeta 3 */}
-                        <div className='w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
+                        <div className='w-5/6 mx-auto lg:w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
                             <div className='flex justify-center py-5'>
                                 <img src="/img/avatar-masculino.png" alt="avatar masculino" className='w-1/2' />
                             </div>
@@ -99,7 +104,7 @@ const Desarrolladores = () => {
                                     Correo: <span className='font-normal text-black'>roquel371@gmail.com</span>
                                 </p>
                                 <p className='text-color2'>
-                                    Telegram: <span className='font-normal text-black'>@RoqueLopez</span>
+                                    Telegram: <span className='font-normal text-black'>@Rell_Developer</span>
                                 </p>
                                 <p className='text-color2'>
                                     Github: 
@@ -116,16 +121,16 @@ const Desarrolladores = () => {
                 <div className='w-full'>
                     {/* Titulo */}
                     <div className='w-full py-10'>
-                        <h1 className='text-4xl text-color2 font-bold text-center'>
+                        <h1 className='text-3xl lg:text-4xl text-color2 font-bold text-center'>
                             Tutora
                         </h1>
                     </div>
 
                     {/* Tarjetas */}
-                    <div className='w-full flex justify-center'>
+                    <div className='w-full grid grid-cols-1 gap-4 lg:flex lg:justify-center'>
 
                         {/* Tarjeta 1 */}
-                        <div className='w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
+                        <div className='w-5/6 mx-auto lg:w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
                             <div className='flex justify-center py-5'>
                                 <img src="/img/avatar-femenino.png" alt="avatar femenino" className='w-1/2' />
                             </div>

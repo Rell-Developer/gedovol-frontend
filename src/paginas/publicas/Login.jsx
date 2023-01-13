@@ -7,6 +7,7 @@ import clienteAxios from '../../config/axios.jsx';
 import useAuth from '../../hooks/useAuth.jsx';
 
 // Componentes
+import Header from '../../components/publicos/Header';
 import Footer from '../../components/publicos/Footer';
 import Alerta from '../../components/publicos/Alerta';
 import HeartSpinner from '../../components/publicos/HeartSpinner.jsx';
@@ -104,34 +105,35 @@ const Login = () => {
 
             <div className='flex justify-between flex-col'>
                 {/* Encabezado */}
-                <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
+                {/* <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
                     <div className='flex items-center'>
                         <img src="/img/logo-blanco.png" alt="logo" className="w-1/6"/>
                         <h2 className='mx-2 text-white font-bold text-4xl'>
                             GEDOVOL
                         </h2>
                     </div>
-                </header>
+                </header> */}
+                <Header/>
 
                 {/* Contenedor */}
-                <main className='w-full h-full bg-color1 flex justify-center items-center my-5'> 
-                    <div className='bg-color2 w-1/3 p-14 m-10 rounded-lg shadow-lg'>
+                <main className='w-full h-full bg-color1 lg:flex lg:justify-center lg:items-center my-5'> 
+                    <div className='bg-color2 py-4 w-5/6 lg:w-2/5 lg:p-14 mx-auto my-5 lg:m-10 rounded-xl shadow-lg'>
                         {!loading ? (
                             <form onSubmit={handleSubmit}>
                                 <div>
                                     <div className="text-center">
-                                        <h2 className='font-bold text-4xl text-white'>
+                                        <h2 className='font-bold text-3xl lg:text-4xl text-white'>
                                             Bienvenido
                                         </h2>
                                     </div>
 
-                                    <div className='flex flex-col py-5'>
-                                        <label htmlFor="" className='text-white font-bold text-xl py-2 flex items-center'>
-                                            <svg className="w-8 h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
+                                    <div className='flex flex-col py-2 lg:py-5 w-5/6 mx-auto'>
+                                        <label htmlFor="" className='text-white font-bold lg:text-xl py-2 flex items-center'>
+                                            <svg className="w-6 h-6 lg:w-8 lg:h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
                                             Usuario
                                         </label>
                                         <input 
-                                            className='bg-white p-2 rounded-lg border-4 border-gray-200' 
+                                            className='bg-white w-full p-2 rounded-lg border-4 border-gray-200' 
                                             placeholder='Ingrese su usuario' 
                                             type="text" 
                                             autoComplete='off'
@@ -140,13 +142,13 @@ const Login = () => {
                                             />
                                     </div>
 
-                                    <div className='flex flex-col py-5'>
-                                        <label htmlFor="" className='text-white font-bold text-xl py-2 flex items-center'>
-                                            <svg className="w-8 h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>
+                                    <div className='flex flex-col py-2 lg:py-5 w-5/6 mx-auto'>
+                                        <label htmlFor="" className='text-white font-bold lg:text-xl py-2 flex items-center'>
+                                            <svg className="w-6 h-6 lg:w-8 lg:h-8 flex" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>
                                             Contraseña
                                         </label>
                                         <input 
-                                            className='bg-white p-2 rounded-lg border-4 border-gray-200' 
+                                            className='bg-white w-full p-2 rounded-lg border-4 border-gray-200' 
                                             placeholder='Ingrese su contraseña'
                                             type="password"
                                             value={password}
@@ -156,7 +158,7 @@ const Login = () => {
                                 </div>
 
                                 <div className='w-full mt-5 flex justify-center'>
-                                    <input type="submit" value="Ingresar" className='w-3/4 bg-color4 text-white py-4 rounded-lg font-bold cursor-pointer'/>
+                                    <input type="submit" value="Ingresar" className='w-3/4 bg-color4 text-white py-2 lg:py-4 rounded-lg font-bold cursor-pointer'/>
                                 </div>
 
                                 <p className='text-center mt-10 text-white'>

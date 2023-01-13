@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 // ===== Componentes =====
 import Alerta from '../../components/publicos/Alerta.jsx';
+import Header from "../../components/publicos/Header.jsx";
 import Footer from "../../components/publicos/Footer.jsx";
 import clienteAxios from "../../config/axios.jsx";
 
@@ -38,10 +39,11 @@ const confirmarCuenta = () => {
                 if(data.error){
                     // setAlerta({msg:'Hubo un error al verificar el token', error: true});
                     setmensajePantalla('El token no existe o es inválido');
+                    settokenValido(true);
                     return
                 }
 
-                // settokenValido(true);
+                settokenValido(false);
             } catch (error) {
                 console.log(error.message)
             }
@@ -105,21 +107,15 @@ const confirmarCuenta = () => {
             {/* Aparece el mensaje */}
             {msg && <Alerta alerta={alerta}/>}
 
-            <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
-                <div className='flex items-center'>
-                    <img src="/img/logo-blanco.png" alt="logo" className="w-1/6"/>
-                    <h2 className='mx-2 text-white font-bold text-4xl'>
-                        GEDOVOL
-                    </h2>
-                </div>
-            </header>
+            {/* Encabezado */}
+            <Header/>
             
             {/* Contenido */}
             <section className='w-full flex flex-col justify-evenly items-center content-center' style={{height: "80vh"}}>
                 {/* Titulo */}
-                <div className={`${tokenValido ? 'hidden':'flex my-5 items-center'}`}>
+                <div className={`${tokenValido ? 'hidden':'flex my-5 items-center bg-white rounded-lg w-5/6 shadow py-5 px-2'}`}>
                     {/* <img src="/img/no-hay-resultados.png" alt="" width="60" className="mx-2"/> */}
-                    <h2 className='text-4xl font-bold mx-2'>
+                    <h2 className='text-3xl lg:text-4xl font-bold mx-2 text-center'>
                         {mensajePantalla != '' ? mensajePantalla: 'Cambia tu contraseña y Confirmarás tu cuenta'}
                     </h2>
                 </div>
@@ -159,7 +155,7 @@ const confirmarCuenta = () => {
                                         />
                                 </div>
 
-                                <div className={`${tokenValido ? 'flex flex-col justify-center items-center content-center': 'hidden'}`}>
+                                <div className={`${tokenValido ? 'flex flex-col justify-center items-center content-center text-center': 'hidden'}`}>
                                     <h2 className="text-3xl text-white font-bold">
                                         Tu Cuenta ha sido Confirmada con Éxito
                                     </h2>
@@ -175,7 +171,7 @@ const confirmarCuenta = () => {
                             </div>
 
                             <div className={`${tokenValido ? 'hidden':'w-full mt-5 flex justify-center'}`}>
-                                <input type="submit" value="Guardar Contraseña" className='w-3/4 bg-color4 text-white py-4 rounded-lg font-bold cursor-pointer'/>
+                                <input type="submit" value="Guardar Contraseña" className='w-full bg-color4 text-white py-4 rounded-lg font-bold cursor-pointer'/>
                             </div>
                         </form>
                     </div>
@@ -194,7 +190,7 @@ const confirmarCuenta = () => {
                 </div>
             </section>
             {/* Creditos */}
-            {/* <Footer/> */}
+            <Footer/>
         </>
     )
 }
