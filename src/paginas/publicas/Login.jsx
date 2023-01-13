@@ -11,6 +11,7 @@ import Header from '../../components/publicos/Header';
 import Footer from '../../components/publicos/Footer';
 import Alerta from '../../components/publicos/Alerta';
 import HeartSpinner from '../../components/publicos/HeartSpinner.jsx';
+import ContenedorHeartSpinner from '../../components/publicos/ContenedorHeartSpinner.jsx';
 
 const Login = () => {
 
@@ -105,14 +106,6 @@ const Login = () => {
 
             <div className='flex justify-between flex-col'>
                 {/* Encabezado */}
-                {/* <header className='w-full flex justify-center bg-color2 h-24 shadow-lg'>
-                    <div className='flex items-center'>
-                        <img src="/img/logo-blanco.png" alt="logo" className="w-1/6"/>
-                        <h2 className='mx-2 text-white font-bold text-4xl'>
-                            GEDOVOL
-                        </h2>
-                    </div>
-                </header> */}
                 <Header/>
 
                 {/* Contenedor */}
@@ -172,12 +165,8 @@ const Login = () => {
                             </form>
                         ):(
                             <>
-                                <div className='text-center font-bold text-white'>
-                                    <HeartSpinner />
-                                    <h2>
-                                        Cargando...
-                                    </h2>
-                                </div>
+                                {/* Spinner de Cargando */}
+                                <ContenedorHeartSpinner/>
                             </>
                         )}
                     </div>

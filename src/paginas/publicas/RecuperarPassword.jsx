@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/publicos/Header.jsx";
 import Alerta from "../../components/publicos/Alerta.jsx";
 import Footer from "../../components/publicos/Footer.jsx";
+import TokenInvalidoMSG from "../../components/publicos/TokenInvalidoMSG.jsx";
 
 // config para peticiones
 import clienteAxios from "../../config/axios.jsx";
@@ -188,29 +189,8 @@ const RecuperarPassword = () => {
                                     </div>
                                 ):(
                                     <>
-                                        <div className="mx-auto flex flex-col justify-center">
-                                            <h2 className="text-2xl uppercase font-bold text-center">
-                                                Token Invalido o Inexistente
-                                            </h2>
-
-                                            <div className="mx-auto">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-broken" width="88" height="88" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                    <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                                                    <path d="M12 7l-2 4l4 3l-2 4v3" />
-                                                </svg>
-                                            </div>
-
-                                            <div className="mx-auto">
-                                                <button
-                                                    type="button"
-                                                    className="bg-color1 font-bold py-2 px-4 text-black rounded-lg shadow mt-5 hover:bg-white transition-all"
-                                                    onClick={e => navigate('/')}
-                                                >
-                                                    Regresar al Inicio
-                                                </button>
-                                            </div>
-                                        </div>
+                                        {/* Componente de Token invalido */}
+                                        <TokenInvalidoMSG datos={{title: 'Token Invalido o Inexistente', direction:'/'}}/>
                                     </>
                                 )}
                             </div>
