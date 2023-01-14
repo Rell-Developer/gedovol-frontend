@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 
 // Helpers
 import dataLocalStorage from '../../helpers/dataLocalStorage.js';
+import emailValidator from '../../helpers/emailValidator.js';
 
 import Usuario from './Usuario.jsx';
 
@@ -100,6 +101,18 @@ const UsuarioModal = ({data}) => {
             // Retorno para no ejecutar más el codigo
             return
         }
+        
+        // Verificacion si el correo es valido
+        if(!emailValidator(correo)){
+            // Establece el valor del mensaje de alerta
+            setAlerta({msg:"Correo Inválido, ingrese un correo válido", error: true});
+            
+            // Establece el tiempo de duracion para quitar el mensaje
+            setTimeout(() => setAlerta({}), 2500);
+
+            // Retorno para no ejecutar más el codigo
+            return
+        }
 
         // Verificacion del tamaño de la contraseña
         if(password.length < 6){
@@ -132,22 +145,25 @@ const UsuarioModal = ({data}) => {
             // Peticion http
             let {data} = await clienteAxios.post('/usuario/registrar-usuario', {usuario, cedula, correo, password, rol, usuario_id:datos.id});
 
-            // Verificando si hay un error
-            // Se mostrara un mensaje de lo ocurrido
-            if(data.error){
-                setAlerta({error:true, msg: data.message});
-            }else{
-                // Mostrando mensaje
-                setAlerta({msg: data.message});
-            }
-
-            
-            form.classList.remove('hidden');
-
-            loading_heart.classList.add('hidden');
-
-            // El mensaje desaparecerá en 3 segundos
-            setTimeout(() => setAlerta({}), 3000);
+            setTimeout(() => {
+                
+                // Verificando si hay un error
+                // Se mostrara un mensaje de lo ocurrido
+                if(data.error){
+                    setAlerta({error:true, msg: data.message});
+                }else{
+                    // Mostrando mensaje
+                    setAlerta({msg: data.message});
+                }
+    
+                
+                form.classList.remove('hidden');
+    
+                loading_heart.classList.add('hidden');
+    
+                // El mensaje desaparecerá en 3 segundos
+                setTimeout(() => setAlerta({}), 3000);
+            }, 1500);
         } catch (error) {
             // Si ocurre un error, se mostrará en consola del navegador
             console.log(error.message);
@@ -511,11 +527,11 @@ const UsuarioModal = ({data}) => {
                         </form>
 
                         <div id="loading-heart" className="w-full flex-col justify-center hidden">
-                            <div className="mx-auto">
+                            <div className="mx-auto text-center">
                                 <HeartSpinner/>
                             </div>
                             <h2 className="text-center font-bold text-white">
-                                Registrando, espere un momento...
+                                Cargando, espere un momento...
                             </h2>
                         </div>
                     </div>
