@@ -37,7 +37,7 @@ const OlvidePassword = () => {
 
         // Verificacion del email
         if(!emailValidator(email)){
-            setAlerta({msg: 'Email no válido, por favor, verifique', error: true});
+            setAlerta({msg: 'Email no válido, por favor, verifique y en minúsculas', error: true});
             setTimeout(() => setAlerta({}), 2500);
             return
         }

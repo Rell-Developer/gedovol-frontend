@@ -105,7 +105,7 @@ const UsuarioModal = ({data}) => {
         // Verificacion si el correo es valido
         if(!emailValidator(correo)){
             // Establece el valor del mensaje de alerta
-            setAlerta({msg:"Correo Inválido, ingrese un correo válido", error: true});
+            setAlerta({msg:"Correo Inválido, ingrese un correo válido y en minúsculas", error: true});
             
             // Establece el tiempo de duracion para quitar el mensaje
             setTimeout(() => setAlerta({}), 2500);
@@ -181,7 +181,7 @@ const UsuarioModal = ({data}) => {
             let id = datos.id;
             
             // Actualizar los datos del usuario
-            let {data} = await clienteAxios.put('/usuario/actualizar-usuario', {usuario, cedula, correo, rol, id});
+            let {data} = await clienteAxios.put('/usuario/actualizar-usuario', {usuario, cedula, correo: correo.toLowerCase(), rol, id});
 
             // Verificando si hay algun error
             if(data.error){

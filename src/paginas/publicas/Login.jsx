@@ -165,8 +165,12 @@ const Login = () => {
                             </form>
                         ):(
                             <>
-                                {/* Spinner de Cargando */}
-                                <ContenedorHeartSpinner/>
+                                <div className='text-center font-bold text-white'>
+                                    <HeartSpinner />
+                                    <h2>
+                                        Cargando...
+                                    </h2>
+                                </div>
                             </>
                         )}
                     </div>

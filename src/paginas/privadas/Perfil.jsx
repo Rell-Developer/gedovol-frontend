@@ -8,6 +8,9 @@ import clienteAxios from "../../config/axios";
 import Alerta from '../../components/publicos/Alerta.jsx';
 import RedHeartSpinner from '../../components/publicos/RedHeartSpinner.jsx';
 
+// Helpers
+import emailValidator from '../../helpers/emailValidator.js';
+
 const Perfil = () => {
 
     // useStates
@@ -15,6 +18,7 @@ const Perfil = () => {
     const [cedula, setCedula] = useState('');
     const [correo, setCorreo] = useState('');
     const [rol, setRol] = useState('');
+    const [telefono, setTelefono] = useState('');
     const [confirmado, setConfirmado] = useState(false);
     
     const [password, setPassword] = useState('');
@@ -50,6 +54,7 @@ const Perfil = () => {
         setCorreo(data.correo);
         setRol(data.rol);
         setConfirmado(data.confirmado);
+        setTelefono('0412-2356870');
     }
 
     const botonEditar = async() =>{
@@ -60,6 +65,18 @@ const Perfil = () => {
             if(usuario === "" || cedula === "" || correo === "" || correo === null || usuario === null || cedula === null){
                 setAlerta({error: true,msg:'Todos los campos son obligatorios'});
                 setTimeout(() => setAlerta({}), 3000);
+                return
+            }
+
+            // Verificacion si el correo es valido
+            if(!emailValidator(correo)){
+                // Establece el valor del mensaje de alerta
+                setAlerta({msg:"Correo Inválido, ingrese un correo válido y en minúsculas", error: true});
+                
+                // Establece el tiempo de duracion para quitar el mensaje
+                setTimeout(() => setAlerta({}), 2500);
+
+                // Retorno para no ejecutar más el codigo
                 return
             }
 
@@ -117,12 +134,21 @@ const Perfil = () => {
 
     const cambiarPass = async() =>{
 
+        // Verificar si los campos estan vacios
         if(password === "" || nuevoPassword === "" || repetirPassword === ""){
             setAlerta({error: true,msg:'Todos los campos son obligatorios'});
             setTimeout(() => setAlerta({}), 3000);
             return
         }
 
+        // Verificar si la contraseña actual es igual a la nueva
+        if(password === nuevoPassword){
+            setAlerta({error: true,msg:'La nueva contraseña no puede ser igual a la contraseña actual'});
+            setTimeout(() => setAlerta({}), 3000);
+            return
+        }
+
+        // Verificar si la nueva contraseña y el repetir contraseña no son iguales
         if(nuevoPassword !== repetirPassword){
             setAlerta({error: true,msg:'Al repetir la contraseña debe ser igual a la nueva contraseña'});
             setTimeout(() => setAlerta({}), 3000);
@@ -153,6 +179,7 @@ const Perfil = () => {
 
             let id = JSON.parse( localStorage.getItem('data')).id;
             let {data} = await clienteAxios.put('/usuario/cambiar-password', {password, nuevoPassword, id});
+            console.log(data);
 
             setTimeout(async() => {
                 
@@ -318,9 +345,22 @@ const Perfil = () => {
 
                                         {!editando ? 
                                             <h3 className="text-xl">
-                                                0412-2356870
+                                                {telefono}
                                             </h3>
                                         :null}
+                                        
+
+                                        {editando &&
+                                        
+                                            <input 
+                                                className='bg-white p-1 text-sm rounded-lg border-4 border-gray-200' 
+                                                placeholder='Ingrese su número de telefono' 
+                                                type="text" 
+                                                autoComplete='off'
+                                                value={telefono}
+                                                onChange={e => setTelefono(e.target.value)}
+                                            />
+                                        }
                                     </div>
                                 </div>
                             </div>
