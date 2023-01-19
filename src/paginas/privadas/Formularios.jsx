@@ -1,14 +1,25 @@
 import {useState, useEffect} from 'react'
+import RedHeartSpinner from '../../components/publicos/RedHeartSpinner.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Formularios = () => {
 
-    const [formularios, setFormularios] = useState([])
+    const [formularios, setFormularios] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         
         const obtenerFormularios = ()=>{
-            console.log('formuarlios')
+
+            setTimeout(() => {
+                
+                setLoading(false);
+            }, 1500);
         }
+
+        obtenerFormularios();
     }, [])
     
 
@@ -43,19 +54,27 @@ const Formularios = () => {
                             className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all' 
                             onClick={buscador}/> */}
 
-                        {/* <input 
+                        <button
+                            className='w-1/2 flex ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
+                            onClick={e => navigate("/admin/nuevo-formulario")}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-plus" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                <line x1="12" y1="11" x2="12" y2="17" />
+                                <line x1="9" y1="14" x2="15" y2="14" />
+                            </svg>
+                            Nuevo Formulario
+                        </button>
+{/* 
+                        <input 
                             type="button" 
-                            value="Nuevo Usuario" 
+                            value="Nuevo Formulario" 
                             className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
-                            onClick={() =>{
-                                if(!document.querySelector('#custom-modal').classList.contains('borrando-usuario')){
-                                    setStatusModal('Registrar un Usuario');
-                                    mostrarModal();
-                                }
-                            }}
-                            /> */}
+                            />
 
-                            
+                             */}
                         {/* <input 
                             type="button" 
                             value="Mostrar Todos los Usuarios"
@@ -95,30 +114,41 @@ const Formularios = () => {
 
                     {/* Tarjetas */}
                     <div id="content-cards" className='w-full'>
-                        <div className={`${formularios.length > 0 ? 'grid grid-cols-4 gap-2 h-96 w-full overflow-scroll white-custom-scroll':'flex h-60 w-1/2 justify-center'} m-5 mx-auto`}>
-                            { formularios.length > 0 ? (
-                                <>
-                                    
-                                </>
-                            ):
-                            (   
-                                <>
-                                    <div className='w-full bg-white rounded-lg shadow-lg uppercase mx-auto font-bold text-center flex flex-col items-center'>
-                                        <h2 className='mx-auto my-5'>
-                                            No hay formularios registrados.
-                                        </h2>
+                        {loading ? (
+                            <div className="bg-white rounded-lg shadow-lg w-1/4 text-center p-5 mx-auto m-5">
+                                <RedHeartSpinner/>
+                                <h2 className='font-bold'>
+                                    Cargando formularios...
+                                </h2>
+                            </div>
+                        ):
+                        (
+                            <>
+                                <div className={`${formularios.length > 0 ? 'grid grid-cols-4 gap-2 h-96 w-full overflow-scroll white-custom-scroll':'flex h-60 w-1/2 justify-center'} m-5 mx-auto`}>
+                                    { formularios.length > 0 ? (
+                                        <>
+                                        </>
+                                    ):
+                                    (   
+                                        <>
+                                            <div className='w-1/2 bg-white rounded-lg shadow-lg uppercase mx-auto font-bold text-center flex flex-col items-center justify-center'>
+                                                <h2 className='mx-auto my-2'>
+                                                    No hay formularios registrados.
+                                                </h2>
 
-                                        <div className="mx-auto">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-heart-broken" width="88" height="88" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#000" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                                                <path d="M12 7l-2 4l4 3l-2 4v3" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </div>
+                                                <div className="mx-auto">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-heart-broken" width="88" height="88" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#000" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                                                        <path d="M12 7l-2 4l4 3l-2 4v3" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
