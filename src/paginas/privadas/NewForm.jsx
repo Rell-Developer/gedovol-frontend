@@ -3,17 +3,47 @@ import { useNavigate } from 'react-router-dom';
 
 const NewForm = () => {
 
-    const navigate = useNavigate();
+    // UseStates
+    const [values, setValues] = useState({
+        donante:'',
+        tipoSangre:'',
+        fechaDonadoUltimamente:'',
+        fechaTatuadoUltimamente:'',
+        enfermedadVenerea: '',
+        seSienteBien:'',
+        ingirioAlimentoUltimamente:'',
+        rechazadoComoDonante:'',
+        reaccionDonacion:'',
+        conocioResultadosDonacion:'',
+        diarreaGripeFiebreUltimamente:'',
+        controlPorEnfermedad:'',
+        sometidoCirugia:'',
+        transfusionSangre:'',
+        paludismoAlgunaVez:'',
+        estadoAreaPaludicasUltimamente:'',
+        hepatitisOrinaOscuraPielAmarrillaAlgunaVez:'',
+        contactoConAlguienHepatitis:'',
+        tieneTatuajesPiercings:'',
+        recibidoHormona:'',
+        tenidoFamiliaresEnfermedadTransplante:'',
+        tomandoMedicamenteUltimamente:'',
+        picadaChipoEnfermedadChagas:'',
+        
+    });
 
+    // UseStates para condicionales
     const [aparicionCalendarDonado, setAparacionCalendarDonadoUltimamente] = useState(false);
     const [aparicionCalendarTatuado, setAparacionCalendarTatuadoUltimamente] = useState(false);
     const [aparicionInputEnfermedadVenerea, setAparicionInputEnfermedadVenerea] = useState(false);
     const [segundaPaginado, setSegundaPaginado] = useState(false);
 
+    // Navegador
+    const navigate = useNavigate();
+
     return (
         <>
             <section
-                className='w-full m-5 p-5 flex flex-col bg-white rounded'
+                className='w-full m-5 p-5 flex flex-col bg-white rounded shadow'
             >  
                 <div className='flex items-center'>
                     {/* Boton de atras */}
@@ -32,10 +62,18 @@ const NewForm = () => {
                             Nuevo Formulario
                         </h2>
                     </div>
+
+                    <div className='flex self-end'>
+                        <button
+                            className='w-full flex cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
+                        >
+                            Guardar
+                        </button>
+                    </div>
                 </div>
 
                 <div
-                    className='w-full py-2 my-2'
+                    className='w-full py-2 my-2 overflow-scroll'
                 >
                     {/* Primera Hoja */}
                     <div className={`${segundaPaginado ? 'hidden': ''} w-full`}>
@@ -248,69 +286,11 @@ const NewForm = () => {
                             </div>
                         </div>
                         <hr />
-
-                        <div className='flex justify-evenly my-5 mx-3'>
-                            <div className='flex flex-col'>
-                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha recibido transfusiones de sangre?</label>
-                                <div className='flex justify-evenly my-1'>
-                                    <div>
-                                        <input type="radio" name='Done' value="siDone"/>
-                                        <label htmlFor="siDone"> Sí</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name='Done'/>
-                                        <label htmlFor="Done"> No</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col">
-                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido paludismo alguna vez?</label>
-                                <div className='flex justify-evenly my-1'>
-                                    <div>
-                                        <input type="radio" name='Done' value="siDone"/>
-                                        <label htmlFor="siDone"> Sí</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name='Done'/>
-                                        <label htmlFor="Done"> No</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col">
-                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha estado en áreas palúdicas en los últimos 6 meses?</label>
-                                <div className='flex justify-evenly my-1'>
-                                    <div>
-                                        <input type="radio" name='Done' value="siDone"/>
-                                        <label htmlFor="siDone"> Sí</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name='Done'/>
-                                        <label htmlFor="Done"> No</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col">
-                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido hepatitis, orina oscuras o piel amarilla alguna vez?</label>
-                                <div className='flex justify-evenly my-1'>
-                                    <div>
-                                        <input type="radio" name='Done' value="siDone"/>
-                                        <label htmlFor="siDone"> Sí</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name='Done'/>
-                                        <label htmlFor="Done"> No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
                     </div>
 
                     {/* Segunda Hoja */}
                     <div className={`${segundaPaginado ? '': 'hidden'} w-full`}>
+
                         <div className='flex justify-evenly my-5 mx-3'>
                             <div className='flex flex-col'>
                                 <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha recibido transfusiones de sangre?</label>
@@ -369,6 +349,66 @@ const NewForm = () => {
                             </div>
                         </div>
                         <hr />
+
+                        <div className='flex justify-evenly my-5 mx-3'>
+                            <div className='flex flex-col'>
+                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha recibido transfusiones de sangre?</label>
+                                <div className='flex justify-evenly my-1'>
+                                    <div>
+                                        <input type="radio" name='Done' value="siDone"/>
+                                        <label htmlFor="siDone"> Sí</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name='Done'/>
+                                        <label htmlFor="Done"> No</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col">
+                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido paludismo alguna vez?</label>
+                                <div className='flex justify-evenly my-1'>
+                                    <div>
+                                        <input type="radio" name='Done' value="siDone"/>
+                                        <label htmlFor="siDone"> Sí</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name='Done'/>
+                                        <label htmlFor="Done"> No</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col">
+                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha estado en áreas palúdicas en los últimos 6 meses?</label>
+                                <div className='flex justify-evenly my-1'>
+                                    <div>
+                                        <input type="radio" name='Done' value="siDone"/>
+                                        <label htmlFor="siDone"> Sí</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name='Done'/>
+                                        <label htmlFor="Done"> No</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col">
+                                <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido hepatitis, orina oscuras o piel amarilla alguna vez?</label>
+                                <div className='flex justify-evenly my-1'>
+                                    <div>
+                                        <input type="radio" name='Done' value="siDone"/>
+                                        <label htmlFor="siDone"> Sí</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name='Done'/>
+                                        <label htmlFor="Done"> No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
                         <div className='flex justify-evenly my-5 mx-3'>
                             <div className='flex flex-col'>
                                 <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido contactos estrecho o relaciones sexuales con alguien con hepatitis?</label>
@@ -510,10 +550,13 @@ const NewForm = () => {
                     </div>
 
 
-                    <div className='flex justify-end'>
+                    <div className='flex justify-end items-center'>
+                        <p>
+                            Pagina {!segundaPaginado ? '1/2':'2/2'}
+                        </p>
                         <button
                             id='boton1'
-                            className={`${segundaPaginado ? '': 'hidden'} bg-color3 hover:bg-color2 rounded shadow p-2 transition-all mx-2`}
+                            className={`${segundaPaginado ? '': 'hidden'} bg-color3 hover:bg-color2 rounded shadow p-2 transition-all m-2`}
                             onClick={e => setSegundaPaginado(false)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" class="w-6 h-6">
@@ -523,7 +566,7 @@ const NewForm = () => {
 
                         <button
                             id='boton2'
-                            className={`${segundaPaginado ? 'hidden': ''} bg-color3 hover:bg-color2 rounded shadow p-2 transition-all mx-2`}
+                            className={`${segundaPaginado ? 'hidden': ''} bg-color3 hover:bg-color2 rounded shadow p-2 transition-all m-2`}
                             onClick={e => setSegundaPaginado(true)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" class="w-6 h-6">
