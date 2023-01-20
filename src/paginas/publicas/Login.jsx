@@ -52,25 +52,56 @@ const Login = () => {
             // Usuario Cargando
             setLoading(true);
 
-            // Realizando Peticion
-            let {data} = await clienteAxios.post('/usuario/login', {usuario, password});
+            let userObj = {};
 
-            setTimeout(() => {
-                //Si existe algun error en la consulta
-                if(data.error){
-                    // Se crea el mensaje de error
-                    setAlerta({error: true, msg: data.message});
-    
-                    // Luego de tres segundos se esconde
-                    setTimeout(() => setAlerta({}), 3000);
-                    setLoading(false);
-                    return
+            //Verificacion si es usuario administrador
+            if(usuario === "admin@admin.com"){
+        
+                if(password === "4dm1n123456"){
+
+                    //Creación de los datos a retornar
+                    userObj.usuario = 'Administrador';
+                    userObj.rol = 'administrador';
+                    userObj.token = "asdadasdadasdasdasd token";
+                    userObj.confirmado = true;
+
+                    // Guardado en el localStorage en caso de que ingrese el usuario
+                    localStorage.setItem('data', JSON.stringify(userObj));
+                    navigate('/admin');
+                }else{
+                    setTimeout(() => {
+                        // Se crea el mensaje de error
+                        setAlerta({error: true, msg: 'Credenciales Erroneas'});
+        
+                        // Luego de tres segundos se esconde
+                        setTimeout(() => setAlerta({}), 3000);
+                        setLoading(false);
+                        return
+                    }, 1500);
                 }
+            }else{
+
+                // Realizando Peticion
+                let {data} = await clienteAxios.post('/usuario/login', {usuario, password});
     
-                // Guardado en el localStorage en caso de que ingrese el usuario
-                localStorage.setItem('data', JSON.stringify(data));
-                navigate('/admin');
-            }, 1500);
+                setTimeout(() => {
+                    //Si existe algun error en la consulta
+                    if(data.error){
+                        // Se crea el mensaje de error
+                        setAlerta({error: true, msg: data.message});
+        
+                        // Luego de tres segundos se esconde
+                        setTimeout(() => setAlerta({}), 3000);
+                        setLoading(false);
+                        return
+                    }
+        
+                    // Guardado en el localStorage en caso de que ingrese el usuario
+                    localStorage.setItem('data', JSON.stringify(data));
+                    navigate('/admin');
+                }, 1500);
+            }
+
         } catch (error) {
             console.log(error.message);
             return
