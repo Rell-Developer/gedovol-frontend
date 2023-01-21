@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 // Componentes
+import DonanteModal from '../../components/privados/DonanteModal.jsx';
 /* import UsuarioModal from '../../components/UsuarioModal.jsx';
 import Usuario from '../../components/Usuario.jsx'; */
 import clienteAxios from '../../config/axios.jsx';
@@ -23,7 +24,7 @@ const Donantes = () => {
 
         try {
             let {data} = await clienteAxios('/usuario/obtener-usuarios');
-            users = data;
+            // users = data;
             return data
         } catch (error) {
             console.log(error);
@@ -113,11 +114,33 @@ const Donantes = () => {
         modal.classList.add('mostrar-modal');
     }
 
+    const mostrarDonantes= async() =>{
+
+        try {
+            let {data} = await clienteAxios('/donante/obtener-donantes');
+
+            if(data.error){
+                console.log('Hubo un error')
+                console.log(data.msg)
+                return
+            }
+
+            console.log('resultados')
+            if(data.length <= 0){
+                console.log('No hay donantes Registrados')
+            }
+            console.log(data);
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
     return (
         <>
             <div className='w-full flex flex-col bg-white'>
                 {/* <UsuarioModal/> */}
                 {/* Contenedor Superior */}
+                <DonanteModal/>
                 <div className='w-full flex justify-evenly py-5 my-5'>
                     {/* Titulo */}
                     <div className="text-center font-bold text-color2">
@@ -150,8 +173,14 @@ const Donantes = () => {
                             className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
                             onClick={mostrarModal}
                             />
-                    </div>
 
+                        <input 
+                            type="button" 
+                            value="Mostrar Todos los Donantes"
+                            className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
+                            onClick={mostrarDonantes}
+                            />
+                    </div>
                 </div>
 
                 {/* Contenedor Medio */}

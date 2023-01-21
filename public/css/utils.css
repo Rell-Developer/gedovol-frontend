@@ -25,3 +25,19 @@
 .mostrar-alerta{
     opacity: 1;
 /* }  */
+
+
+/* White Custom Scroll */
+.white-custom-scroll::-webkit-scrollbar{
+
+    width: 8px;
+    height: 8px;
+    
+    /* background: linear-gradient(to top, rgba(27, 26, 23, 0.151), rgba(240, 227, 202, 0.1)); */
+}
+
+.white-custom-scroll::-webkit-scrollbar-thumb{
+    
+    background-color: #fff;
+    border-radius: 5px;
+}

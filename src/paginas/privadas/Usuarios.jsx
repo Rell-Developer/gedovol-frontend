@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 // Componentes
-import UsuarioModal from '../../components/UsuarioModal.jsx';
-import Usuario from '../../components/Usuario.jsx';
+import UsuarioModal from '../../components/privados/UsuarioModal.jsx';
+import Usuario from '../../components/privados/Usuario.jsx';
 import clienteAxios from '../../config/axios.jsx';
 
 // Hooks
@@ -17,6 +17,8 @@ const Usuarios = () => {
 
     // Usuarios
     // const {usuarios, guardarUsuario} = useUsuarios();
+    const [statusModal, setStatusModal] = useState('');
+    const [datosUsuario, setDatosUsuario] = useState({});
 
     // console.log(usuarios)
 
@@ -25,6 +27,7 @@ const Usuarios = () => {
 
     useEffect(() =>{
         buscarUsuariosDB();
+        // mostrarUsuarios();
     },[])
 
     const buscarUsuariosDB = async() =>{
@@ -38,18 +41,6 @@ const Usuarios = () => {
         }
     }
 
-    const clickFila = (e) =>{
-        console.log('Llegando');
-        console.log(e);
-
-        const modal = document.querySelector('#custom-modal');
-
-        if(!modal.classList.contains('mostrar-modal')){
-            let id = e.parentElement.getAttribute('data-id');
-            navigate(`/admin/perfil/${id}`);
-        }
-    }
-
     const buscador = (buscarIndividual) =>{
 
         const modal = document.querySelector('#custom-modal');
@@ -60,7 +51,7 @@ const Usuarios = () => {
             const cedulas = document.querySelectorAll('.campoCedula');
             const buscarTodos = document.querySelector('#buscar-todos');
             const sinResultados = document.querySelector('#sinResultados');
-    
+
             let contador = 0;
             
             cedulas.forEach( cedula => {
@@ -72,9 +63,10 @@ const Usuarios = () => {
                 }
             })
     
-            if(contador == 5){
+            if(contador == cedulas.length){
+                console.log('Sin resultados')
                 sinResultados.classList.remove('hidden');
-                sinResultados.ClassList.add('flex');
+                // sinResultados.classList.add('flex');
             }
         }
 
@@ -116,9 +108,22 @@ const Usuarios = () => {
     const mostrarModal = () =>{
 
         const modal = document.querySelector('#custom-modal');
+        let botonesEditar = document.querySelectorAll('.btn-ver-usuario');
 
-        modal.classList.remove('cerrar-modal');
-        modal.classList.add('mostrar-modal');
+        if(botonesEditar){
+            botonesEditar.forEach( boton =>{
+                boton.classList.remove('opacity-0');
+                boton.classList.add('opacity-100');
+                boton.classList.remove('hidden');
+            })
+        }
+
+        if(modal){
+            if(!modal.classList.contains('mostrar-modal')){
+                modal.classList.remove('cerrar-modal');
+                modal.classList.add('mostrar-modal');
+            }
+        }
     }
 
     const mostrarUsuarios = async() =>{
@@ -126,7 +131,10 @@ const Usuarios = () => {
         const tablaUsuarios = document.querySelector('#body-table-usuarios');
         const contenedorCartas = document.querySelector('#content-cards');
 
+        console.log('borrando registros html')
+
         while(tablaUsuarios.firstChild){
+            console.log('borrando')
             tablaUsuarios.removeChild(tablaUsuarios.firstChild);
         }
 
@@ -140,25 +148,22 @@ const Usuarios = () => {
             row.classList.add('bg-gray-200');
             row.classList.add('hover:bg-gray-300');
             row.classList.add('cursor-pointer');
+            row.classList.add('usuario-register');
             row.setAttribute('data-id', datos.id);
+            row.setAttribute('data-cedula', datos.cedula);
 
             contenedorCartas.classList.add('bg-gray-200');
             contenedorCartas.classList.add('hover:bg-gray-300');
             contenedorCartas.classList.add('cursor-pointer');
             contenedorCartas.setAttribute('data-id', datos.id);
+            contenedorCartas.setAttribute('data-cedula', datos.cedula);
             
             // console.log(datos);
             let contenido = document.createElement('div');
             row.innerHTML = `
-                <td className='p-1 border-x border-y border-black'>
-                    ${datos.usuario}
-                </td>
-                <td className='border-x border-y border-black campoCedula'>
-                    ${datos.cedula}
-                </td>
-                <td className='border-x border-y border-black'>
-                    ${datos.rol}
-                </td>
+                <td class='p-1 border-x border-y border-black'>${datos.usuario}</td>
+                <td class='border-x border-y border-black campoCedula'>${datos.cedula}</td>
+                <td class='border-x border-y border-black'>${datos.rol}</td>
             `
 
             contenedorCartas.innerHTML = `
@@ -185,12 +190,42 @@ const Usuarios = () => {
             
             // console.log('agregando');
         })
+
+        const usuariosRegister = document.querySelectorAll('.usuario-register');
+        const customModal = document.querySelector('#custom-modal');
+
+        usuariosRegister.forEach(usuario => {
+            usuario.addEventListener('click', e => {
+                let identificador;
+                if(e.target.children.length <= 0){
+                    identificador = e.target.parentElement.getAttribute('data-id');
+                    // console.log(e.target.parentElement.getAttribute('data-id'));
+                }
+                else if(e.target.children.length > 0){
+                    identificador = e.target.getAttribute('data-id');
+                    // console.log(e.target.getAttribute('data-id'));
+                }
+
+
+                usuarios.forEach( usuario => {
+                    if(usuario.id === parseInt(identificador)){
+                        if(customModal){
+                            if(!customModal.classList.contains('mostrar-modal')){
+                                setDatosUsuario(usuario);
+                                setStatusModal('Ver un Usuario');
+                                mostrarModal();
+                            }
+                        }
+                    }
+                });
+            })
+        })
     }
 
     return (
         <>
-            <div className='w-full flex flex-col bg-white'>
-                <UsuarioModal/>
+            <div className='w-full flex flex-col'>
+                <UsuarioModal data={{statusModal, datosUsuario}}/>
                 {/* Contenedor Superior */}
                 <div className='w-full flex justify-evenly py-5 my-5'>
                     {/* Titulo */}
@@ -222,7 +257,12 @@ const Usuarios = () => {
                             type="button" 
                             value="Nuevo Usuario" 
                             className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
-                            onClick={mostrarModal}
+                            onClick={() =>{
+                                if(!document.querySelector('#custom-modal').classList.contains('borrando-usuario')){
+                                    setStatusModal('Registrar un Usuario');
+                                    mostrarModal();
+                                }
+                            }}
                             />
 
                             
@@ -284,7 +324,7 @@ const Usuarios = () => {
                                 /> */}
                             </tbody>
                         </table>
-                        <div id="sinResultados" className='mx-auto hidden justify-center items-center flex-col text-center w-1/2 bg-white'>
+                        <div id="sinResultados" className='mx-auto hidden justify-center items-center flex-col text-center w-1/2 bg-white p-5 rounded-lg shadow'>
                             <h2 className='text-xl font-bold py-2'>
                                 No se Encontraron resultados de su busqueda.
                             </h2>

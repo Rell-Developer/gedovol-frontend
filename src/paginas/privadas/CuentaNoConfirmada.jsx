@@ -31,6 +31,7 @@ const CuentaNoConfirmada = () => {
                         <Link
                             to="/"
                             className="bg-color2 p-4 text-white font-bold rounded-lg shadow-md"
+                            onClick={e=> localStorage.removeItem('data')}
                         >
                             Regresar al Inicio
                         </Link>
