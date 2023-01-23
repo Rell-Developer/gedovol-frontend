@@ -2,6 +2,9 @@ import {useState, useEffect} from 'react'
 import RedHeartSpinner from '../../components/publicos/RedHeartSpinner.jsx';
 import { useNavigate } from 'react-router-dom';
 
+import clienteAxios from '../../config/axios.jsx';
+import FormCard from '../../components/privados/formularios/FormCard.jsx';
+
 const Formularios = () => {
 
     const [formularios, setFormularios] = useState([]);
@@ -13,9 +16,17 @@ const Formularios = () => {
         
         const obtenerFormularios = ()=>{
 
-            setTimeout(() => {
-                
-                setLoading(false);
+            setTimeout(async() => {
+                try {
+                    
+                    let {data} = await clienteAxios('/formulario/obtener-formularios');
+
+                    console.log(data);
+                    setFormularios(data);
+                    setLoading(false);
+                } catch (error) {
+                    console.log(error.message);
+                }
             }, 1500);
         }
 
@@ -124,9 +135,10 @@ const Formularios = () => {
                         ):
                         (
                             <>
-                                <div className={`${formularios.length > 0 ? 'grid grid-cols-4 gap-2 h-96 w-full overflow-scroll white-custom-scroll':'flex h-60 w-1/2 justify-center'} m-5 mx-auto`}>
+                                <div className={`${formularios.length > 0 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-1 xl:gap-2 w-full overflow-scroll red-custom-scroll h-56':'flex h-60 w-1/2 justify-center'} m-5 mx-auto`}>
                                     { formularios.length > 0 ? (
                                         <>
+                                            {formularios.map((formulario,index) => <FormCard formulario={formulario} key={index}/>)}
                                         </>
                                     ):
                                     (   
