@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 // Componentes
 import UsuarioModal from '../../components/privados/UsuarioModal.jsx';
 import Usuario from '../../components/privados/Usuario.jsx';
+import UserCard from '../../components/privados/usuarios/UserCard.jsx';
+import ToggleHeart from '../../components/privados/utils/toggleHeart.jsx';
+
+
 import clienteAxios from '../../config/axios.jsx';
 
 // Hooks
@@ -19,6 +23,8 @@ const Usuarios = () => {
     // const {usuarios, guardarUsuario} = useUsuarios();
     const [statusModal, setStatusModal] = useState('');
     const [datosUsuario, setDatosUsuario] = useState({});
+    const [usuarios, setUsuarios] = useState([]);
+    const [tipoVista, setTipoVista] = useState('Table');
 
     // console.log(usuarios)
 
@@ -27,14 +33,15 @@ const Usuarios = () => {
 
     useEffect(() =>{
         buscarUsuariosDB();
-        // mostrarUsuarios();
+        mostrarUsuarios();
     },[])
 
     const buscarUsuariosDB = async() =>{
 
         try {
             let {data} = await clienteAxios('/usuario/obtener-usuarios');
-            users = data;
+            setUsuarios(data);
+
             return data
         } catch (error) {
             console.log(error);
@@ -129,7 +136,7 @@ const Usuarios = () => {
     const mostrarUsuarios = async() =>{
 
         const tablaUsuarios = document.querySelector('#body-table-usuarios');
-        const contenedorCartas = document.querySelector('#content-cards');
+        // const contenedorCartas = document.querySelector('#content-cards');
 
         console.log('borrando registros html')
 
@@ -152,11 +159,11 @@ const Usuarios = () => {
             row.setAttribute('data-id', datos.id);
             row.setAttribute('data-cedula', datos.cedula);
 
-            contenedorCartas.classList.add('bg-gray-200');
-            contenedorCartas.classList.add('hover:bg-gray-300');
-            contenedorCartas.classList.add('cursor-pointer');
-            contenedorCartas.setAttribute('data-id', datos.id);
-            contenedorCartas.setAttribute('data-cedula', datos.cedula);
+            // contenedorCartas.classList.add('bg-gray-200');
+            // contenedorCartas.classList.add('hover:bg-gray-300');
+            // contenedorCartas.classList.add('cursor-pointer');
+            // contenedorCartas.setAttribute('data-id', datos.id);
+            // contenedorCartas.setAttribute('data-cedula', datos.cedula);
             
             // console.log(datos);
             let contenido = document.createElement('div');
@@ -166,24 +173,24 @@ const Usuarios = () => {
                 <td class='border-x border-y border-black'>${datos.rol}</td>
             `
 
-            contenedorCartas.innerHTML = `
-                <div class='w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
-                    <div class='flex justify-center py-5'>
-                        <img src="/img/avatar-masculino.png" alt="avatar masculino" class='w-1/2' />
-                    </div>
-                    <div>
-                        <p class='text-color2'>
-                            Usuario: <span class='font-normal text-black'>${datos.usuario}</span>
-                        </p>
-                        <p class='text-color2'>
-                            Cedula: <span class='font-normal text-black'>${datos.cedula}</span>
-                        </p>
-                        <p class='text-color2'>
-                            Rol: <span class='font-normal text-black'>${datos.rol}</span>
-                        </p>
-                    </div>
-                </div>
-            `
+            // contenedorCartas.innerHTML = `
+            //     <div class='w-1/4 bg-white  p-5 rounded-lg shadow-lg font-bold flex flex-col justify-center justify-items-center content-center'>
+            //         <div class='flex justify-center py-5'>
+            //             <img src="/img/avatar-masculino.png" alt="avatar masculino" class='w-1/2' />
+            //         </div>
+            //         <div>
+            //             <p class='text-color2'>
+            //                 Usuario: <span class='font-normal text-black'>${datos.usuario}</span>
+            //             </p>
+            //             <p class='text-color2'>
+            //                 Cedula: <span class='font-normal text-black'>${datos.cedula}</span>
+            //             </p>
+            //             <p class='text-color2'>
+            //                 Rol: <span class='font-normal text-black'>${datos.rol}</span>
+            //             </p>
+            //         </div>
+            //     </div>
+            // `
 
             // row.appendChild(contenido);
             tablaUsuarios.appendChild(row);
@@ -197,6 +204,9 @@ const Usuarios = () => {
         usuariosRegister.forEach(usuario => {
             usuario.addEventListener('click', e => {
                 let identificador;
+                if(e.target.classList.contains('vermas-btn')){
+                    identificador = e.target.parentElement.parentElement.getAttribute('data-id');
+                }
                 if(e.target.children.length <= 0){
                     identificador = e.target.parentElement.getAttribute('data-id');
                     // console.log(e.target.parentElement.getAttribute('data-id'));
@@ -206,6 +216,7 @@ const Usuarios = () => {
                     // console.log(e.target.getAttribute('data-id'));
                 }
 
+                console.log(usuarios)
 
                 usuarios.forEach( usuario => {
                     if(usuario.id === parseInt(identificador)){
@@ -220,6 +231,11 @@ const Usuarios = () => {
                 });
             })
         })
+    }
+
+    const clickViewType = (vista) => {
+
+        setTipoVista(vista)
     }
 
     return (
@@ -277,9 +293,9 @@ const Usuarios = () => {
                 </div>
 
                 {/* Contenedor Medio */}
-                <div className='w-full flex'>
+                <div className='w-full flex mx-auto flex-col lg:flex-row'>
                     {/* Tipo de Vista */}
-                    <div className='w-1/6 flex flex-col items-center content-center'>
+                    <div className='w-1/6 flex flex-col items-center content-center bg-white mx-3 rounded-lg shadow-md h-36 justify-center mb-5'>
                         {/* titulo */}
                         <div>
                             <h3 className='text-2xl font-bold'>
@@ -288,23 +304,32 @@ const Usuarios = () => {
                         </div>
 
                         {/* Tipo de Vista */}
-                        <div className='py-1 my-1 ml-5 w-5/6'>
-                            <div className='flex justify-start flex-col'>
-                                <div>
-                                    <input type="radio" name="tipoVista" id="tableRadio"  />
-                                    <label htmlFor="tableRadio"> Tabla</label>
+                        <div className='py-1 my-1 w-5/6'>
+                            <div className='flex justify-evenly font-bold'>
+                                <div className={`${tipoVista === 'Table' ? 'bg-slate-100 text-black border border-stone-300':'bg-color3 hover:bg-color2 cursor-pointer text-white shadow-md'} text-center p-2 rounded-lg transition-all`} onClick={e => clickViewType('Table')}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={`${tipoVista === 'Table' ? '#000' : '#fff'}`} className="w-6 h-6 mx-auto">
+                                        <path fill-rule="evenodd" d="M1.5 5.625c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v12.75c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 18.375V5.625zM21 9.375A.375.375 0 0020.625 9h-7.5a.375.375 0 00-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 00.375-.375v-1.5zm0 3.75a.375.375 0 00-.375-.375h-7.5a.375.375 0 00-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 00.375-.375v-1.5zm0 3.75a.375.375 0 00-.375-.375h-7.5a.375.375 0 00-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 00.375-.375v-1.5zM10.875 18.75a.375.375 0 00.375-.375v-1.5a.375.375 0 00-.375-.375h-7.5a.375.375 0 00-.375.375v1.5c0 .207.168.375.375.375h7.5zM3.375 15h7.5a.375.375 0 00.375-.375v-1.5a.375.375 0 00-.375-.375h-7.5a.375.375 0 00-.375.375v1.5c0 .207.168.375.375.375zm0-3.75h7.5a.375.375 0 00.375-.375v-1.5A.375.375 0 0010.875 9h-7.5A.375.375 0 003 9.375v1.5c0 .207.168.375.375.375z" clip-rule="evenodd" />
+                                    </svg>
+                                    <p>
+                                        Tabla
+                                    </p>
                                 </div>
-                                <div>
-                                    <input type="radio" name="tipoVista" id="cardsRadio" />
-                                    <label htmlFor="cardsRadio"> Tarjetas</label>
+                                
+                                <div className={`${tipoVista === 'Cards' ? 'bg-slate-100 text-black border border-stone-300':'bg-color3 hover:bg-color2 cursor-pointer text-white shadow-md'} text-center p-2 rounded-lg transition-all`} onClick={e => clickViewType('Cards')}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={`${tipoVista === 'Cards' ? '#000' : '#fff'}`} className="w-6 h-6 mx-auto">
+                                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm9.75 0a3 3 0 013-3H18a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25a3 3 0 01-3-3V6zM3 15.75a3 3 0 013-3h2.25a3 3 0 013 3V18a3 3 0 01-3 3H6a3 3 0 01-3-3v-2.25zm9.75 0a3 3 0 013-3H18a3 3 0 013 3V18a3 3 0 01-3 3h-2.25a3 3 0 01-3-3v-2.25z" clip-rule="evenodd" />
+                                    </svg>
+                                    <p>
+                                        Tarjetas
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Tabla */}
-                    <div className="w-5/6">
-                        <table className='bg-color3 m-5 w-5/6 rounded shadow-lg border-black border-x border-y'>
+                    <div className={`${tipoVista === 'Table' ? '':'hidden'} w-5/6 bg-white mx-3 rounded-lg shadow-md`}>
+                        <table className='bg-color3 my-5 mx-auto w-5/6 rounded shadow-lg border-black border-x border-y'>
                             <thead className='p-4 text-white'>
                                 <tr>
                                     <th className='p-4 border-x border-black'>
@@ -341,9 +366,17 @@ const Usuarios = () => {
                     </div>
 
                     {/* Tarjetas */}
-                    <div id="content-cards" className='w-5/6 hidden'>
-                        <div className='m-5 w-5/6'>
-
+                    <div id="content-cards" className={`${tipoVista === 'Cards' ? '':'hidden'} w-5/6`}>
+                        <div className='mx-2 w-5/6 grid grid-cols-1 gap-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 h-5/6 overflow-scroll'>
+                            {usuarios.length > 0 ? (
+                                <>
+                                    {usuarios.map( (usuario, i) => <UserCard key={usuario.id} datos={usuario}/>)}
+                                </>
+                            ):(
+                                <>
+                                
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
