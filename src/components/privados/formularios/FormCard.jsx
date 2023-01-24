@@ -1,18 +1,20 @@
 import React from 'react'
 
-const FormCard = ({data}) => {
+const FormCard = ({formulario}) => {
+
+    console.log(formulario)
     return (
         <>
-            <div className='w-5/6 mx-auto lg:w-64 bg-white p-5 rounded-lg shadow-lg font-bold'>
+            <div className='w-5/6 mx-auto my-2 lg:my-0 lg:w-64 bg-white p-5 rounded-lg shadow-lg font-bold'>
                 <div>
                     <p className='text-color2'>
-                        Donante: <span className='font-normal text-black'>Roque Emilio Lopez Loreto</span>
+                        Donante: <span className='font-normal text-black'>Nombre del Donante</span>
                     </p>
                     <p className='text-color2'>
-                        Cedula: <span className='font-normal text-black'>28012038</span>
+                        Cedula: <span className='font-normal text-black'>{formulario.donante_id}</span>
                     </p>
                     <p className='text-color2'>
-                        Fecha: <span className='font-normal text-black'>10/12/2022</span>
+                        Fecha: <span className='font-normal text-black'>{formulario.fechaDonacion}</span>
                     </p>
                 </div>
 
