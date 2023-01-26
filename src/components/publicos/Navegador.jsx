@@ -5,6 +5,7 @@ const Navegador = () => {
 
     // useStates
     const [profile, setProfile] = useState({});
+    const [unfolded, setUnfolded] = useState(true);
     
     // Declarando el navegador
     const navigate = useNavigate();
@@ -13,9 +14,15 @@ const Navegador = () => {
 
         const asignacionProfile = () =>{
             let data = JSON.parse( localStorage.getItem('data'));
+            let unfoldedLS = localStorage.getItem('unfolded');
 
+            console.log(unfoldedLS);
+
+            unfoldedLS ? setUnfolded(unfoldedLS): setUnfolded(false);
+            
             console.log('use efect redirigiendo')
             data ? setProfile(data): navigate('/');
+
         }
 
         asignacionProfile();
@@ -96,12 +103,12 @@ const Navegador = () => {
     return (
         <>
             <section id="navegador"
-                className="w-1/6 h-full pt-2 bg-color2 text-white flex flex-col font-bold justify-between transition-all"
+                className={`${unfolded ? 'w-24':'w-1/6'} h-full pt-2 bg-color2 text-white flex flex-col font-bold justify-between transition-all`}
                 style={{ height: "100vh" }}
             >
                 <div>
                     <div className="px-4 py-1">
-                        <div className="p-4 hover:bg-red-600 hover:bg-opacity-60 hover:border-r-4 flex transition-all cursor-pointer" onClick={despliegueNav}>
+                        <div className="p-4 hover:bg-red-600 hover:bg-opacity-60 hover:border-r-4 flex transition-all cursor-pointer" onClick={ e => despliegueNav()}>
                             <div id="despliegue-btn" className="mr-5 cursor-pointer">
                                 <svg id="despliegue-svg" className="w-6 h-6 transition-all" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clipRule="evenodd"></path>
