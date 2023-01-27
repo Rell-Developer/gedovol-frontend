@@ -22,6 +22,7 @@ import Perfil from './paginas/privadas/Perfil.jsx';
 import Notificaciones from './paginas/privadas/Notificaciones.jsx';
 import Formularios from './paginas/privadas/Formularios.jsx';
 import NewForm from './paginas/privadas/NewForm.jsx';
+import VerFormulario from './paginas/privadas/formularios/VerFormulario.jsx';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                 <Route index element={<Donantes/>}/>
                 <Route path="formularios" element={<Formularios/>}/>
                 <Route path='nuevo-formulario' element={<NewForm/>}/>
+                <Route path='ver-formulario/:id' element={<VerFormulario/>}/>
                 <Route path='usuarios' element={<Usuarios/>}/>
                 <Route path='perfil' element={<Perfil/>}/>
                 <Route path='notificaciones' element={<Notificaciones/>}/>

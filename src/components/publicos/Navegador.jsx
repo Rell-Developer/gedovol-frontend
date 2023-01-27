@@ -20,6 +20,20 @@ const Navegador = () => {
             console.log(unfoldedLS);
 
             unfoldedLS ? setUnfolded(unfoldedLS): setUnfolded(false);
+            if(unfoldedLS){
+                if(unfoldedLS === 'true'){
+                    setUnfolded(unfoldedLS);
+                    const svg = document.querySelector('#despliegue-svg');   
+                    svg.style="transform: rotate(180deg);";
+                }else{
+                    setUnfolded(false);
+                    const svg = document.querySelector('#despliegue-svg');       
+                }
+            }else{
+                setUnfolded(false);
+                const svg = document.querySelector('#despliegue-svg');   
+                // svg.style="transform: rotate(180deg);";
+            }
             
             console.log('use efect redirigiendo')
             data ? setProfile(data): navigate('/');
