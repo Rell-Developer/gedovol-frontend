@@ -135,7 +135,7 @@ const Formularios = () => {
                         ):
                         (
                             <>
-                                <div className={`${formularios.length > 0 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-1 xl:gap-2 w-full overflow-scroll red-custom-scroll h-56':'flex h-60 w-1/2 justify-center'} m-5 mx-auto`}>
+                                <div className={`${formularios.length > 0 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-1 xl:gap-2 w-full overflow-scroll red-custom-scroll':'flex w-1/2 justify-center'} h-96 m-5 mx-auto`}>
                                     { formularios.length > 0 ? (
                                         <>
                                             {formularios.map((formulario,index) => <FormCard formulario={formulario} key={index}/>)}

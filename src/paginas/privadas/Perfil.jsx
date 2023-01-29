@@ -230,7 +230,7 @@ const Perfil = () => {
         <>
             {msg && <Alerta alerta={alerta}/>}
 
-            <div className="w-full flex justify-between p-5 bg-color1">
+            <div className="w-full flex justify-between p-5">
                 {/* Perfil de Usuario */}
                 <div className="bg-white w-9/12 mx-2 rounded-lg flex flex-col justify-around">
 

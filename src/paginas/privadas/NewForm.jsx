@@ -179,7 +179,7 @@ const NewForm = () => {
                     <div className={`${segundaPaginado ? 'hidden': ''} w-full`}>
                         <div className='flex justify-evenly my-5 mx-3'>
                             <div className='flex flex-col'>
-                                <label htmlFor="donante" className='font-bold'>Donante</label>
+                                <label htmlFor="tipoSangre" className='font-bold'>Donante</label>
                                 <select 
                                     id="tipoSangre"
                                     name="donante" 
@@ -198,13 +198,13 @@ const NewForm = () => {
                             <div className='flex flex-col'>
                                 <label htmlFor="donadoUltimamente" className='font-bold'>¿El donante es Apto?</label>
                                 <div className='flex justify-evenly my-1'>
-                                    <div>
-                                        <input type="radio" name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
-                                        <label htmlFor="siDone"> Sí</label>
+                                    <div >
+                                        <input className='cursor-pointer' type="radio" id="siApto" name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
+                                        <label className='cursor-pointer' htmlFor="siApto"> Sí</label>
                                     </div>
                                     <div>
-                                        <input type="radio" name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
-                                        <label htmlFor="Done"> No</label>
+                                        <input className='cursor-pointer' type="radio" id="noApto" name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
+                                        <label className='cursor-pointer' htmlFor="noApto"> No</label>
                                     </div>
                                 </div>
                             </div>     

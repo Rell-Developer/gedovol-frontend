@@ -28,9 +28,9 @@ const RutaProtegida = () => {
             {
                 data ? 
                     data.confirmado ? (
-                        <main className='w-full flex'>
+                        <main className='w-full flex bg-color2'>
                             <Navegador/>
-                            <div className='flex flex-col w-full bg-color1'>
+                            <div className='flex flex-col w-full bg-color1 rounded-l-3xl'>
                                 <div className="flex content-center" style={{height: "90vh"}}>
                                 
                                     {data.token ? <Outlet />: <Navigate to="/" />}
