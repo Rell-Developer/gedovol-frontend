@@ -274,7 +274,7 @@ const DonanteModal = (donantes) => {
                                         
                                         <div className=' flex flex-col py-2 ml-5'>
                                             <label htmlFor="" className='text-white font-bold py-2 flex items-center'>
-                                                Ha Tenido Alguna Enfermedad Veneria
+                                                Ha Tenido Alguna Enfermedad Venerea
                                             </label>
                                             <div>
                                             <input type="radio" value="Male" name="gender" /> <label htmlFor="" className='text-white mr-2 items-center'>

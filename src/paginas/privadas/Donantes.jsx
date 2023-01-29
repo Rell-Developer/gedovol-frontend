@@ -213,26 +213,26 @@ const Donantes = () => {
             const contenedorBotones = document.createElement('div');
 
             //contendor principal
-            carta.classList.add("w-60" ,"flex"  ,"flex-col" ,"p-10", "m-2" ,"rounded-xl","bg-red-600")
+            carta.classList.add("w-60" ,"flex"  ,"flex-col" ,"p-10", "m-2" ,"rounded-xl","bg-white",'border', 'border-grey')
             carta.dataset.id = id;
 
             //textos de la carta
             contenedorDatos.classList.add('flex','flex-col');
             //cuerpo de la carta 
             contenedorDatos.innerHTML += `
-                <p class='text-white'><span class='font-bold'>Nombre y Apellido:</span>${nombre} ${apellido}</p>
-                <p class='text-white'><span class='font-bold'>Cedula:</span>${cedula}</p>
-                <p class='text-white'><span class='font-bold'>Sexo:</span>${sexo}</p>
+                <p class='text-black'><span class='font-bold'>Nombre y Apellido:</span>${nombre} ${apellido}</p>
+                <p class='text-black'><span class='font-bold'>Cedula:</span>${cedula}</p>
+                <p class='text-black'><span class='font-bold'>Sexo:</span>${sexo}</p>
             `;
 
             contenedorBotones.classList.add('w-full','mt-8','flex','justify-evenly');
             contenedorBotones.innerHTML += `
                 <div class='mr-3'>
-                <button class='bg-black text-white px-8 py-2 capitalize  rounded-lg font-bold'>Ver</button>
+                <button class='bg-red-700 text-white px-8 py-2 capitalize  rounded-lg font-bold'>Ver</button>
                 </div>
             
                 <div>
-                    <button class='bg-black text-white px-5 py-2  rounded-lg font-bold'>Eliminar</button>
+                    <button class='bg-red-700 text-white px-5 py-2  rounded-lg font-bold'>Eliminar</button>
                 </div>
             `
 
@@ -250,7 +250,7 @@ const Donantes = () => {
 
     return (
         <>
-            <div className='w-full flex flex-col bg-white'>
+            <div className='w-full flex flex-col bg-color1 rounded-l-3xl'>
                 {/* <UsuarioModal/> */}
                 {/* Contenedor Superior */}
                 <DonanteModal data={donantes}/>
@@ -312,13 +312,13 @@ const Donantes = () => {
                         <div className='flex justify-evenly w-1/2   mt-4'>
                     
                             <div>
-                                <button  className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'>Sexo</button>
+                                <button  className='ml-5 cursor-pointer p-3 bg-white shadow-xl border border-gray-400 hover:bg-color2 text-black font-bold rounded-lg shadow transition-all'>Sexo</button>
                             </div>
                             <div>
-                                <button   className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'>Tipo de Sangre</button>
+                                <button   className='ml-5 cursor-pointer p-3 bg-white shadow-xl border border-gray-400 hover:bg-color2 text-black font-bold rounded-lg shadow capitalize transition-all'>Tipo de Sangre</button>
                             </div>
                             <div>
-                                <button  className='ml-5 cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'>Estatus</button>
+                                <button  className='ml-5 cursor-pointer p-3 bg-white shadow-xl border border-gray-400 hover:bg-color2 text-black font-bold rounded-lg shadow transition-all'>Estatus</button>
                             </div>
                         </div>
 
