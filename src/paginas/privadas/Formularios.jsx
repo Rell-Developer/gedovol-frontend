@@ -33,13 +33,33 @@ const Formularios = () => {
         obtenerFormularios();
     }, [])
     
+    const buscarCedula = (cedula) =>{
+        const cards = document.querySelectorAll('.cardForm');
+
+        if(cedula !== ''){
+            cards.forEach( card => card.getAttribute('data-cedula') !== cedula ? card.classList.add('hidden'): card.classList.remove('hidden'));
+        }else{
+            cards.forEach( card => card.classList.remove('hidden'));
+        }
+    }
+
+    const buscarFecha = (Fecha) =>{
+        const cards = document.querySelectorAll('.cardForm');
+        console.log(Fecha);
+
+        if(Fecha !== ''){
+            cards.forEach( card => card.getAttribute('data-fecha') !== Fecha ? card.classList.add('hidden'): card.classList.remove('hidden'));
+        }else{
+            cards.forEach( card => card.classList.remove('hidden'));
+        }
+    }
 
     return (
         <>
             <div className='w-full flex flex-col'>
                 {/* <UsuarioModal data={{statusModal, datosUsuario}}/> */}
                 {/* Contenedor Superior */}
-                <div className='w-full flex justify-evenly py-5 my-5'>
+                <div className='w-full flex justify-evenly md:py-2 lg:py-5 md:my-2 lg:my-5'>
                     {/* Titulo */}
                     <div className="text-center font-bold text-color2">
                         <h2 className='text-4xl font-bold'>
@@ -57,7 +77,9 @@ const Formularios = () => {
                             type="number" 
                             min="1" 
                             placeholder='Buscar por Cedula' 
-                            className='block bg-white shadow w-full rounded-xl border-2 border-gray-400 p-3 pl-4 pr-12 sm:text-sm'/>
+                            className='block bg-white shadow w-full rounded-xl border-2 border-gray-400 p-3 pl-4 pr-12 sm:text-sm'
+                            onChange={e => buscarCedula(e.target.value)}
+                        />
                         
                         {/* <input 
                             type="button" 
@@ -117,6 +139,7 @@ const Formularios = () => {
                                         type="date" 
                                         name="tipoVista" 
                                         className='p-2 border bg-white rounded-lg shadow'
+                                        onChange={e => buscarFecha(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -124,7 +147,7 @@ const Formularios = () => {
                     </div>
 
                     {/* Tarjetas */}
-                    <div id="content-cards" className='w-full'>
+                    <div id="content-cards" className='w-full md:h-60'>
                         {loading ? (
                             <div className="bg-white rounded-lg shadow-lg w-1/4 text-center p-5 mx-auto m-5">
                                 <RedHeartSpinner/>
@@ -135,7 +158,7 @@ const Formularios = () => {
                         ):
                         (
                             <>
-                                <div className={`${formularios.length > 0 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-1 xl:gap-2 w-full overflow-scroll red-custom-scroll':'flex w-1/2 justify-center'} h-96 m-5 mx-auto`}>
+                                <div className={`${formularios.length > 0 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-1 xl:gap-2 w-full overflow-scroll red-custom-scroll':'flex w-1/2 justify-center'} md:h-64 xl:h-96 m-2 lg:m-5 mx-auto`}>
                                     { formularios.length > 0 ? (
                                         <>
                                             {formularios.map((formulario,index) => <FormCard formulario={formulario} key={index}/>)}

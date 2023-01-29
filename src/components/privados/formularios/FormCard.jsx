@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 // Componentes
 import RedHeartSpinner from '../../publicos/RedHeartSpinner.jsx';
@@ -11,7 +12,9 @@ const FormCard = ({formulario}) => {
     // UseStates
     const [eliminar, setEliminar] = useState(false);
     const [eliminando, setEliminando] = useState(false);
-    const [mensaje, setMensaje] = useState('')
+    const [mensaje, setMensaje] = useState('');
+
+    const navigate = useNavigate();
 
     // Funciones
     const handlerDelete = async(e) => {
@@ -28,9 +31,7 @@ const FormCard = ({formulario}) => {
                 setTimeout(() => {
                     setMensaje(data.message);
                     setTimeout(() => {
-                        setEliminar(false);
-                        setEliminando(false);
-                        setMensaje('');
+                        reiniciarStates();
                         return
                     }, 2500);
                 }, 2500);
@@ -48,19 +49,25 @@ const FormCard = ({formulario}) => {
             setTimeout(() => {
                 setMensaje(error.message);
                 setTimeout(() => {
-                    setEliminar(false);
-                    setEliminando(false);
-                    setMensaje('');
+                    reiniciarStates();
                 }, 2500);
             }, 2500);
         }
+    }
+
+    const reiniciarStates = ()=>{
+        setEliminar(false);
+        setEliminando(false);
+        setMensaje('');
     }
 
     // Retorno
     return (
         <>
             <div 
-                className={`${mensaje !== '' ? 'bg-gradient-to-r from-color2 to-color3':'bg-white'} w-5/6 mx-auto my-2 lg:my-0 lg:w-64 bg-white p-5 rounded-lg shadow-lg font-bold h-60 flex flex-col justify-center`}
+                className={`${mensaje !== '' ? 'bg-gradient-to-r from-color2 to-color3':'bg-white'} w-5/6 mx-auto my-2 lg:my-0 lg:w-64 bg-white p-5 rounded-lg shadow-lg font-bold h-60 flex flex-col justify-center cardForm`}
+                data-cedula={formulario.donante_id}
+                data-fecha={formulario.fechaDonacion}
             >
                 {mensaje === '' ? (
                     <>
@@ -78,7 +85,10 @@ const FormCard = ({formulario}) => {
                             </div>
 
                             <div className='flex flex-col mt-3'>
-                                <button className='bg-color3 hover:bg-color2 transition-all rounded-lg font-bold text-white p-2 my-1 usuario-register vermas-btn'>
+                                <button 
+                                    className='bg-color3 hover:bg-color2 transition-all rounded-lg font-bold text-white p-2 my-1 usuario-register vermas-btn'
+                                    onClick={e => navigate(`/admin/ver-formulario/${formulario.id}`)}
+                                >
                                     Ver Formulario
                                 </button>
                                 
@@ -107,7 +117,7 @@ const FormCard = ({formulario}) => {
                                 </button>
                                 <button
                                     className='bg-color3 hover:bg-color2 transition-all rounded-lg font-bold text-white p-2 my-1'
-                                    onClick={e => setEliminando(false)}
+                                    onClick={e => reiniciarStates()}
                                 >
                                     No
                                 </button>
