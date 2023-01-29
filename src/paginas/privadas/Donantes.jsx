@@ -15,8 +15,8 @@ const Donantes = () => {
     const navigate = useNavigate();
 
     useEffect(() =>{
-        buscarUsuariosDB();
-    },[])
+        mostrarDonantes();
+    },[donantes])
 
     const buscarUsuariosDB = async() =>{
 
@@ -197,6 +197,33 @@ const Donantes = () => {
                     }}
 
                 ]
+            },
+            {
+                id: Date.now(),
+                nombre:"Roque",
+                apellido:"Lopez",
+                cedula:'228012038',
+                sexo: 'Masculino',
+                tipoSangre: 'B+',
+                estado : 'Acto',
+                correo:  'Pedroj4567@gmail.com',
+                direccion:'Calle don pedro',
+                telefono: '04243709647',
+                preguntas : [
+                    {pregunta_1 : {
+                        respuesta: 'si',
+                        fecha: '10/08/2022'
+                    }},
+                    {pregunta_2:{
+                        respuesta:'no',
+                        fecha:''
+                    }},
+                    {pregunta_3:{
+                        respuesta:'no',
+                        valor:''
+                    }}
+
+                ]
             }
         ]
 
@@ -299,9 +326,9 @@ const Donantes = () => {
 
 
                 {/* Contenedor Medio */}
-                <div >
+                <div className='bg-white w-5/6 rounded-lg mx-auto'>
                     {/* Tipo de Vista */}
-                    <div className='w-full flex flex-col items-center content-center'>
+                    <div className='w-full flex flex-col items-center content-center p-4'>
                         {/* titulo */}
                         <div className='w-full mx-auto'>
                             <h3 className='text-3xl text-center font-bold'>
@@ -320,18 +347,13 @@ const Donantes = () => {
                             <div>
                                 <button  className='ml-5 cursor-pointer p-3 bg-white shadow-xl border border-gray-400 hover:bg-color2 text-black font-bold rounded-lg shadow transition-all'>Estatus</button>
                             </div>
-                        </div>
-
-
-                       
-                 
-        
+                        </div>          
                     </div>
 
                     {/* div */}
-                    <div className="w-full h-96 my-8 ">
+                    <div className="w-full h-96 my-8">
                         {/* Contenido */}
-                        <div className=' w-2/3   my-8 mx-auto justify-center grid grid-cols-3 overflow-y-scroll' id='contenedorDonantes'>
+                        <div className=' w-5/6 my-8 mx-auto justify-center grid grid-cols-3 overflow-y-scroll h-96' id='contenedorDonantes'>
 
                         </div>
                         {/* Mensaje de error  */}
