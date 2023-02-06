@@ -56,6 +56,7 @@ const VerFormulario = () => {
     const [loading, setLoading] = useState(true);
     const [msgGuardado, setMsgGuardado] = useState('');
     const [MSGError, setMSGError] = useState('');
+    const [editando, setEditando] = useState(false);
 
     // Navegador
     const navigate = useNavigate();
@@ -67,26 +68,25 @@ const VerFormulario = () => {
 
         console.log('en el nuevo jsx')
 
-        const buscarFormulario = async() =>{
 
-            let {data} = await clienteAxios(`/formulario/obtener-formulario/${params.id}`);
-
-            console.log(data);
-            if(data.error){
-                setMSGError(data.message);
-                return
-            }
-
-            establecerValores(data);
-
-        }
-
-        setTimeout(() => {
-            buscarFormulario();
-            setLoading(false);
-        }, 1500);
+        buscarFormulario();
+        setTimeout(() => setLoading(false), 1000);
     },[])
     
+    const buscarFormulario = async() =>{
+        console.log('Buscando datos');
+
+        let {data} = await clienteAxios(`/formulario/obtener-formulario/${params.id}`);
+
+        console.log(data);
+        if(data.error){
+            setMSGError(data.message);
+            return
+        }
+
+        establecerValores(data);
+
+    }
 
     // Al realizar un cambio en algun campo
     const actualizarInputs = (e) =>{
@@ -172,6 +172,13 @@ const VerFormulario = () => {
         objNames.forEach((name, i) => values[name] = objValores[i])
     }
 
+    const changesCancel = () =>{
+        setLoading(true);
+        setEditando(false);
+        buscarFormulario();
+        setTimeout(() => setLoading(false), 2000);
+    }
+
     // Destructuring del mensaje del componente alerta
     const {msg} = alerta;
 
@@ -198,16 +205,25 @@ const VerFormulario = () => {
 
                             <div className='text-center w-full'>
                                 <h2 className='text-2xl font-bold text-color2'>
-                                    Ver Formulario
+                                    {editando ? 'Editando':'Ver'} Formulario
                                 </h2>
                             </div>
 
                             <div className={`${loading || msgGuardado !== '' ? 'hidden':''} flex self-end`}>
-                                <button
-                                    className='w-full flex cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all'
-                                >
-                                    Editar
-                                </button>
+                                <div className="w-full flex justify-between">
+                                    <button
+                                        className={`${editando ? 'bg-black hover:text-color2 hover:bg-slate-100 border border-black hover:border-color2':'bg-color3 hover:bg-color2 '} w-full flex cursor-pointer p-3 text-white font-bold rounded-lg shadow transition-all mx-2`}
+                                        onClick={e => !editando ? setEditando(true): changesCancel()}
+                                    >
+                                        {editando ? 'Cancelar':'Editar'}
+                                    </button>
+
+                                    <button
+                                        className={`${editando ? '':'hidden'} w-full flex cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all mx-2`}
+                                    >
+                                        Guardar
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -220,19 +236,6 @@ const VerFormulario = () => {
                                 <div className='flex justify-evenly my-5 mx-3'>
                                     <div className='flex flex-col'>
                                         <label htmlFor="tipoSangre" className='font-bold'>Donante</label>
-                                        <select 
-                                            id="tipoSangre"
-                                            name="donante" 
-                                            value={values.donante_id}
-                                            onChange={e => actualizarInputs(e)}
-                                            className='bg-white w-full p-2 rounded-lg border-4 border-gray-200'
-                                        >
-                                            <option value="">Seleccione a un donante</option>
-                                            <option value="28012038">Roque Emilio Lopez Loreto - 28012038</option>
-                                            <option value="19685321">Adriana Carolina Moncada - 19685321</option>
-                                            <option value="29741018">Victor Alejandro Maldonado - 29741018</option>
-                                            <option value="19254131">Adriana Roa - 19254131</option>
-                                        </select>
                                         <p>
                                             {values.donante_id}
                                         </p>
@@ -241,133 +244,138 @@ const VerFormulario = () => {
                                     <div className='flex flex-col'>
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿El donante es Apto?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div >
-                                                <input className='cursor-pointer' type="radio" id="siApto" name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
-                                                <label className='cursor-pointer' htmlFor="siApto"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input className='cursor-pointer' type="radio" id="noApto" name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
-                                                <label className='cursor-pointer' htmlFor="noApto"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.estatus ? 'Sí': 'No'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div >
+                                                        <input className='cursor-pointer' type="radio" id="siApto" checked={values.estatus ? true:false} name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className='cursor-pointer' htmlFor="siApto"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className='cursor-pointer' type="radio" id="noApto" checked={values.estatus ? false:true} name='estatus' value={values.estatus} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className='cursor-pointer' htmlFor="noApto"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.estatus ? 'Sí': 'No'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>     
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>Fecha de Donación</label>
-                                        
-                                        {/* <input 
-                                            id="fechaDonacion" 
-                                            type="date" 
-                                            name="fechaDonacion"
-                                            values={values.fechaDonacion}
-                                            onChange={e => actualizarInputs(e)}
-                                            className={`bg-white w-full p-2 rounded-lg border-4 border-gray-200`}/> */}
-                                        <p>
-                                            {values.fechaDonacion}
-                                        </p>
+                                        {editando ? (
+                                            
+                                            <input 
+                                                id="fechaDonacion" 
+                                                type="date" 
+                                                name="fechaDonacion"
+                                                value={values.fechaDonacion}
+                                                onChange={e => actualizarInputs(e)}
+                                                className={`bg-white w-full p-2 rounded-lg border-4 border-gray-200`}/>
+                                        ):(
+                                            <p>
+                                                {values.fechaDonacion}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                                 <hr />
 
                                 <div className='flex justify-evenly my-5 mx-3'>
-                                    {/* <div className='flex flex-col'>
-                                        <label htmlFor="tipoSangre" className='font-bold'>Tipo de Sangre</label>
-                                        <select 
-                                            id="tipoSangre"
-                                            name="tipoSangre"
-                                            values={values.tipoSangre}
-                                            onChange={e => actualizarInputs(e)}
-                                            className='bg-white w-full p-2 rounded-lg border-4 border-gray-200'
-                                        >
-                                            <option value="">Selecciona un tipo de sangre</option>
-                                            <option value="A+">A+</option>
-                                            <option value="O+">O+</option>
-                                            <option value="B+">B+</option>
-                                            <option value="AB+">AB+</option>
-                                            <option value="A-">A-</option>
-                                            <option value="O-">O-</option>
-                                            <option value="B-">B-</option>
-                                            <option value="AB-">AB-</option>
-                                        </select>
-                                    </div> */}
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha donado sangre ultimamente?</label>
-                                        {/* <div className='flex justify-evenly my-1'>
-                                            <div>
-                                                <input type="radio" name='Done' value="siDone" onClick={e => setAparacionCalendarDonadoUltimamente(true)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='Done' onClick={e => setAparacionCalendarDonadoUltimamente(false)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div>
-                                        </div>
-                                        <input 
-                                            id="donadoUltimamente" 
-                                            type="date" 
-                                            name="fechaDonadoUltimamente"
-                                            values={values.fechaDonadoUltimamente}
-                                            onChange={e => actualizarInputs(e)}
-                                            className={`${aparicionCalendarDonado ? '': 'hidden'} bg-white w-full p-2 rounded-lg border-4 border-gray-200`}/> */}
-                                    
-                                        <p>
-                                            {values.fechaDonadoUltimamente === '' ? 'No': values.ultima_donacion}
-                                        </p>
+                                        
+                                        { editando ? (
+                                                <>
+                                                    <div className='flex justify-evenly my-1'>
+                                                        <div>
+                                                            <input className="cursor-pointer" type="radio" name='Done' id="siDone" checked={values.fechaDonadoUltimamente != '' || aparicionCalendarDonado ? true:false} onClick={e => setAparacionCalendarDonadoUltimamente(true)}/>
+                                                            <label className="cursor-pointer" htmlFor="siDone"> Sí</label>
+                                                        </div>
+                                                        <div>
+                                                            <input className="cursor-pointer" type="radio" name='Done' id="noDone" checked={values.fechaDonadoUltimamente == '' || !aparicionCalendarDonado ? false:true} onClick={e => setAparacionCalendarDonadoUltimamente(false)}/>
+                                                            <label className="cursor-pointer" htmlFor="noDone"> No</label>
+                                                        </div>
+                                                    </div>
+                                                    <input 
+                                                        id="donadoUltimamente" 
+                                                        type="date" 
+                                                        name="fechaDonadoUltimamente"
+                                                        value={values.fechaDonadoUltimamente}
+                                                        onChange={e => actualizarInputs(e)}
+                                                        className={`${values.fechaDonadoUltimamente != '' ? '': 'hidden'} bg-white w-full p-2 rounded-lg border-4 border-gray-200`}/>
+                                                </>
+                                            ):(
+                                                <p>
+                                                    {values.fechaDonadoUltimamente === '' ? 'No': values.fechaDonadoUltimamente}
+                                                </p>
+                                            )}
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="fechaTatuadoUltimamente" className='font-bold'>¿Se ha tatuado en los ultimos 6 meses?</label>
-                                        {/* <div className='flex justify-evenly my-1'>
-                                            <div>
-                                                <input type="radio" name='fechaTatuado' onClick={e => setAparacionCalendarTatuadoUltimamente(true)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='fechaTatuado' onClick={e => setAparacionCalendarTatuadoUltimamente(false)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div>
-                                        </div>
-                                        <input 
-                                            id="fechaTatuadoUltimamente" 
-                                            type="date" 
-                                            name='fechaTatuadoUltimamente'
-                                            values={values.fechaTatuadoUltimamente}
-                                            onChange={e => actualizarInputs(e)}
-                                            className={`${aparicionCalendarTatuado ? '': 'hidden'} bg-white w-full p-2 rounded-lg border-4 border-gray-200`}/> */}
-                                        <p>
-                                            {values.fechaTatuadoUltimamente === '' ? 'No': values.ultimo_tatuaje}
-                                        </p>
+                                        {editando ? (
+                                            <>
+                                                <div className='flex justify-evenly my-1'>
+                                                    <div>
+                                                        <input type="radio" name='fechaTatuado' id="siTatuado" checked={values.fechaTatuadoUltimamente != '' || aparicionCalendarTatuado ? true:false} onChange={e => setAparacionCalendarTatuadoUltimamente(true)}/>
+                                                        <label htmlFor="siTatuado"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name='fechaTatuado' id="noTatuado" checked={values.fechaTatuadoUltimamente == '' || !aparicionCalendarTatuado ? false:true} onChange={e => setAparacionCalendarTatuadoUltimamente(false)}/>
+                                                        <label htmlFor="noTatuado"> No</label>
+                                                    </div>
+                                                </div>
+                                                <input 
+                                                    id="fechaTatuadoUltimamente" 
+                                                    type="date" 
+                                                    name='fechaTatuadoUltimamente'
+                                                    value={values.fechaTatuadoUltimamente}
+                                                    onChange={e => actualizarInputs(e)}
+                                                    className={`${values.fechaTatuadoUltimamente !== '' ? '': 'hidden'} bg-white w-full p-2 rounded-lg border-4 border-gray-200`}/>
+                                            </>
+                                        ):(
+                                            <>
+                                                <p>
+                                                    {values.fechaTatuadoUltimamente === '' ? 'No': values.fechaTatuadoUltimamente}
+                                                </p>
+                                            </>
+                                        )}
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="enfermedadVenerea" className='font-bold'>¿Ha tenido alguna enfermedad venerea?</label>
-                                        {/* <div className='flex justify-evenly my-1'>
-                                            <div>
-                                                <input type="radio" name='enfermedadVenerea' onClick={e => setAparicionInputEnfermedadVenerea(true)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='enfermedadVenerea' onClick={e => setAparicionInputEnfermedadVenerea(false)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div>
-                                        </div>
-                                        <input
-                                            id="enfermedadVenerea" 
-                                            type="text" 
-                                            name="enfermedadVenerea"
-                                            values={values.enfermedadVenerea}
-                                            onChange={e => actualizarInputs(e)}
-                                            className={`${aparicionInputEnfermedadVenerea ? '': 'hidden'} bg-white w-full p-2 rounded-lg border-4 border-gray-200`}
-                                            placeholder="¿Cual enfermedad?"
-                                            /> */}
-                                        <p>
-                                            {values.enfermedadVenerea === "" ? 'No': values.enfermedad}
-                                        </p>
+                                        {editando ? (
+                                            <>
+                                                <div className='flex justify-evenly my-1'>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="sienfermedadVenerea" type="radio" name='enfermedadVenerea' checked={aparicionInputEnfermedadVenerea} onChange={e => setAparicionInputEnfermedadVenerea(true)}/>
+                                                        <label className="cursor-pointer" htmlFor="sienfermedadVenerea"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="noenfermedadVenerea" type="radio" name='enfermedadVenerea' checked={!aparicionInputEnfermedadVenerea} onChange={e => setAparicionInputEnfermedadVenerea(false)}/>
+                                                        <label className="cursor-pointer" htmlFor="noenfermedadVenerea"> No</label>
+                                                    </div>
+                                                </div>
+                                                <input
+                                                    id="enfermedadVenerea" 
+                                                    type="text" 
+                                                    name="enfermedadVenerea"
+                                                    values={values.enfermedadVenerea}
+                                                    onChange={e => actualizarInputs(e)}
+                                                    className={`${aparicionInputEnfermedadVenerea ? '': 'hidden'} bg-white w-full p-2 rounded-lg border-4 border-gray-200`}
+                                                    placeholder="¿Cual enfermedad?"
+                                                    />
+                                            </>
+                                        ):(
+                                            <p>
+                                                {values.enfermedadVenerea === "" ? 'No': values.enfermedad}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                                 <hr />
@@ -376,60 +384,72 @@ const VerFormulario = () => {
                                     <div className='flex flex-col'>
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Se siente bien el día de hoy?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='seSienteBien' value={values.seSienteBien} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='seSienteBien' value={values.seSienteBien} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-
-                                            <div>
-                                                <p>
-                                                    {values.seSienteBien == "" || values.pregunta1 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='seSienteBien' id="seSienteBien" checked={values.seSienteBien} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="seSienteBien"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='seSienteBien' id="noSienteBien" checked={!values.seSienteBien} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noSienteBien"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.seSienteBien == "" || values.pregunta1 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ingirio alimento en las ultimas 6 horas?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='ingirioAlimentoUltimamente' value={values.ingirioAlimentoUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='ingirioAlimentoUltimamente' value={values.ingirioAlimentoUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-
-                                            <div>
-                                                <p>
-                                                    {values.ingirioAlimentoUltimamente == "" || values.pregunta2 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='ingirioAlimentoUltimamente' id="siIngeri" checked={values.ingirioAlimentoUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="siIngeri"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='ingirioAlimentoUltimamente' id="noIngeri" checked={!values.ingirioAlimentoUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noIngeri"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.ingirioAlimentoUltimamente == "" || values.pregunta2 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha sido rechazado alguna vez como donante?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='rechazadoComoDonante' value={values.rechazadoComoDonante} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='rechazadoComoDonante' value={values.rechazadoComoDonante} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-
-                                            <div>
-                                                <p>
-                                                    {values.rechazadoComoDonante == "" || values.pregunta3 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='rechazadoComoDonante' id="siRechazado" checked={values.rechazadoComoDonante} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="siRechazado"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='rechazadoComoDonante' id="noRechazado" checked={!values.rechazadoComoDonante} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noRechazado"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.rechazadoComoDonante == "" || values.pregunta3 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
@@ -438,20 +458,25 @@ const VerFormulario = () => {
                                             durante o despues
                                             de la donacion?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='reaccionDonacion' value={values.reaccionDonacion} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='reaccionDonacion' value={values.reaccionDonacion} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='reaccionDonacion' id="siReaccion" checked={values.reaccionDonacion} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="siReaccion"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='reaccionDonacion' id="noReaccion" checked={!values.reaccionDonacion} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noReaccion"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.reaccionDonacion == "" || values.pregunta4 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
 
-                                            <div>
-                                                <p>
-                                                    {values.reaccionDonacion == "" || values.pregunta4 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -461,79 +486,99 @@ const VerFormulario = () => {
                                     <div className='flex flex-col'>
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Conoció los resultados de los examenes en ocasion de su donacion?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='conocioResultadosDonacion' value={values.conocioResultadosDonacion} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='conocioResultadosDonacion' value={values.conocioResultadosDonacion} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='conocioResultadosDonacion' id="siResultadosDonacion" checked={values.conocioResultadosDonacion} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="siResultadosDonacion"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" type="radio" name='conocioResultadosDonacion' id="noResultadosDonacion" checked={!values.conocioResultadosDonacion} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noResultadosDonacion"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.conocioResultadosDonacion == "" || values.pregunta5 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
 
-                                            <div>
-                                                <p>
-                                                    {values.conocioResultadosDonacion == "" || values.pregunta5 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido diarrea, gripe o fiebre en la ultima semana?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='diarreaGripeFiebreUltimamente' value={values.diarreaGripeFiebreUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='diarreaGripeFiebreUltimamente' value={values.diarreaGripeFiebreUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-
-                                            <div>
-                                                <p>
-                                                    {values.diarreaGripeFiebreUltimamente == "" || values.pregunta6 === false? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                
+                                                    <div>
+                                                        <input id="siDiarrea" className="cursor-pointer" type="radio" name='diarreaGripeFiebreUltimamente' checked={values.diarreaGripeFiebreUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="siDiarrea"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="noDiarrea" className="cursor-pointer" type="radio" name='diarreaGripeFiebreUltimamente' checked={!values.diarreaGripeFiebreUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noDiarrea"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.diarreaGripeFiebreUltimamente == "" || values.pregunta6 === false? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha estado en control por una enfermedad importante?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='controlPorEnfermedad' value={values.controlPorEnfermedad} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='controlPorEnfermedad' value={values.controlPorEnfermedad} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-
-                                            <div>
-                                                <p>
-                                                    {values.controlPorEnfermedad == "" || values.pregunta7 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                
+                                                    <div>
+                                                        <input id="siControlEnfermedad" className="cursor-pointer" type="radio" name='controlPorEnfermedad' checked={values.controlPorEnfermedad} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="siControlEnfermedad"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="noControlEnfermedad" className="cursor-pointer" type="radio" name='controlPorEnfermedad' checked={!values.controlPorEnfermedad} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noControlEnfermedad"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.controlPorEnfermedad == "" || values.pregunta7 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha sido sometido a cirugia alguna vez?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='sometidoCirugia' value={values.sometidoCirugia} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='sometidoCirugia' value={values.sometidoCirugia} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.sometidoCirugia == "" || values.pregunta8 === false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="sisometidoCirugia" className="cursor-pointer" type="radio" name='sometidoCirugia' checked={values.sometidoCirugia} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sisometidoCirugia"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="nosometidoCirugia" className="cursor-pointer" type="radio" name='sometidoCirugia' checked={!values.sometidoCirugia} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="nosometidoCirugia"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.sometidoCirugia == "" || values.pregunta8 === false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -547,78 +592,100 @@ const VerFormulario = () => {
                                     <div className='flex flex-col'>
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha recibido transfusiones de sangre?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio"  name='transfusionSangre' value={values.transfusionSangre} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio"  name='transfusionSangre' value={values.transfusionSangre} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.transfusionSangre == "" || values.pregunta9 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="sitransfusionSangre" className="cursor-pointer" type="radio"  name='transfusionSangre' checked={values.transfusionSangre} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sitransfusionSangre"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="notransfusionSangre" className="cursor-pointer" type="radio"  name='transfusionSangre' checked={!values.transfusionSangre} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="notransfusionSangre"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.transfusionSangre == "" || values.pregunta9 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido paludismo alguna vez?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='paludismoAlgunaVez' value={values.paludismoAlgunaVez} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='paludismoAlgunaVez' value={values.paludismoAlgunaVez} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.paludismoAlgunaVez == "" || values.pregunta10 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="sipaludismoAlgunaVez" type="radio" name='paludismoAlgunaVez' checked={values.paludismoAlgunaVez} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sipaludismoAlgunaVez"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="nopaludismoAlgunaVez" type="radio" name='paludismoAlgunaVez' checked={!values.paludismoAlgunaVez} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="nopaludismoAlgunaVez"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.paludismoAlgunaVez == "" || values.pregunta10 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha estado en áreas palúdicas en los últimos 6 meses?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='estadoAreaPaludicasUltimamente' value={values.estadoAreaPaludicasUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='estadoAreaPaludicasUltimamente' value={values.estadoAreaPaludicasUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="siestadoAreaPaludicasUltimamente" type="radio" name='estadoAreaPaludicasUltimamente' checked={values.estadoAreaPaludicasUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="siestadoAreaPaludicasUltimamente"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="noestadoAreaPaludicasUltimamente" type="radio" name='estadoAreaPaludicasUltimamente' checked={!values.estadoAreaPaludicasUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="noestadoAreaPaludicasUltimamente"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
 
-                                            <div>
-                                                <p>
-                                                    {values.estadoAreaPaludicasUltimamente == "" || values.pregunta11 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                                <div>
+                                                    <p>
+                                                        {values.estadoAreaPaludicasUltimamente == "" || values.pregunta11 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
+
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido hepatitis, orina oscuras o piel amarilla alguna vez?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name="hepatitisOrinaOscuraPielAmarrillaAlgunaVez" value={values.hepatitisOrinaOscuraPielAmarrillaAlgunaVez} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name="hepatitisOrinaOscuraPielAmarrillaAlgunaVez" value={values.hepatitisOrinaOscuraPielAmarrillaAlgunaVez} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="nohepatitisOrinaOscuraPielAmarrillaAlgunaVez" className="cursor-pointer" type="radio" name="hepatitisOrinaOscuraPielAmarrillaAlgunaVez" checked={values.hepatitisOrinaOscuraPielAmarrillaAlgunaVez} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sihepatitisOrinaOscuraPielAmarrillaAlgunaVez"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="nohepatitisOrinaOscuraPielAmarrillaAlgunaVez" className="cursor-pointer" type="radio" name="hepatitisOrinaOscuraPielAmarrillaAlgunaVez" checked={!values.hepatitisOrinaOscuraPielAmarrillaAlgunaVez} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="nohepatitisOrinaOscuraPielAmarrillaAlgunaVez"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
 
-                                            <div>
-                                                <p>
-                                                    {values.hepatitisOrinaOscuraPielAmarrillaAlgunaVez == "" || values.pregunta12 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                                <div>
+                                                    <p>
+                                                        {values.hepatitisOrinaOscuraPielAmarrillaAlgunaVez == "" || values.pregunta12 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
+
                                         </div>
                                     </div>
                                 </div>
@@ -628,58 +695,75 @@ const VerFormulario = () => {
                                     <div className='flex flex-col'>
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido contactos estrecho o relaciones sexuales con alguien con hepatitis?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='contactoConAlguienHepatitis' value={values.contactoConAlguienHepatitis} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='contactoConAlguienHepatitis' value={values.contactoConAlguienHepatitis} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="sicontactoConAlguienHepatitis" className="cursor-pointer" type="radio" name='contactoConAlguienHepatitis' checked={values.contactoConAlguienHepatitis} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sicontactoConAlguienHepatitis"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="nocontactoConAlguienHepatitis" className="cursor-pointer" type="radio" name='contactoConAlguienHepatitis' checked={!values.contactoConAlguienHepatitis} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="nocontactoConAlguienHepatitis"> No</label>
+                                                    </div>
+                                                </>
 
-                                            <div>
-                                                <p>
-                                                    {values.contactoConAlguienHepatitis == "" || values.pregunta13 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.contactoConAlguienHepatitis == "" || values.pregunta13 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Tienes tatuajes, piercings, etc, en el cuerpo?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='tieneTatuajesPiercings' value={values.tieneTatuajesPiercings} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='tieneTatuajesPiercings' value={values.tieneTatuajesPiercings} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.tieneTatuajesPiercings == "" || values.pregunta14 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="sitieneTatuajesPiercings" className="cursor-pointer" type="radio" name='tieneTatuajesPiercings' checked={values.tieneTatuajesPiercings} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sitieneTatuajesPiercings"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="notieneTatuajesPiercings" className="cursor-pointer" type="radio" name='tieneTatuajesPiercings' checked={!values.tieneTatuajesPiercings} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="notieneTatuajesPiercings"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+
+                                                <div>
+                                                    <p>
+                                                        {values.tieneTatuajesPiercings == "" || values.pregunta14 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Has recibido hormonas de crecimiento de origen humano alguna vez?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='recibidoHormona' value={values.recibidoHormona} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='recibidoHormona' value={values.recibidoHormona} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.recibidoHormona == "" || values.pregunta15 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="sirecibidoHormona" className="cursor-pointer" type="radio" name='recibidoHormona' checked={values.recibidoHormona} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sirecibidoHormona"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="norecibidoHormona" className="cursor-pointer" type="radio" name='recibidoHormona' checked={!values.recibidoHormona} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="norecibidoHormona"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+
+                                                <div>
+                                                    <p>
+                                                        {values.recibidoHormona == "" || values.pregunta15 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
@@ -693,57 +777,72 @@ const VerFormulario = () => {
                                             recibido trasplante de 
                                             cornea o duramadre?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='tenidoFamiliaresEnfermedadTransplante' value={values.tenidoFamiliaresEnfermedadTransplante} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='tenidoFamiliaresEnfermedadTransplante' value={values.tenidoFamiliaresEnfermedadTransplante} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.tenidoFamiliaresEnfermedadTransplante == "" || values.pregunta16 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                    <>
+                                                        <div>
+                                                            <input id="sitenidoFamiliaresEnfermedadTransplante" className="cursor-pointer" type="radio" name='tenidoFamiliaresEnfermedadTransplante' checked={values.tenidoFamiliaresEnfermedadTransplante} onChange={e => cambioValorChecked(e)}/>
+                                                            <label className="cursor-pointer" htmlFor="sitenidoFamiliaresEnfermedadTransplante"> Sí</label>
+                                                        </div>
+                                                        <div>
+                                                            <input id="notenidoFamiliaresEnfermedadTransplante" className="cursor-pointer" type="radio" name='tenidoFamiliaresEnfermedadTransplante' checked={!values.tenidoFamiliaresEnfermedadTransplante} onChange={e => cambioValorChecked(e)}/>
+                                                            <label className="cursor-pointer" htmlFor="notenidoFamiliaresEnfermedadTransplante"> No</label>
+                                                        </div>
+                                                    </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.tenidoFamiliaresEnfermedadTransplante == "" || values.pregunta16 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className='flex flex-col'>
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Esta tomando algun tipo de medicamento actualmente?, ¿Ha tomado aspirina en los últimos 3 días?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='tomandoMedicamenteUltimamente' value={values.tomandoMedicamenteUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='tomandoMedicamenteUltimamente' value={values.tomandoMedicamenteUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.tomandoMedicamenteUltimamente == "" || values.pregunta17 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="sitomandoMedicamenteUltimamente" type="radio" name='tomandoMedicamenteUltimamente' checked={values.tomandoMedicamenteUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sitomandoMedicamenteUltimamente"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="notomandoMedicamenteUltimamente" type="radio" name='tomandoMedicamenteUltimamente' checked={!values.tomandoMedicamenteUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="notomandoMedicamenteUltimamente"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.tomandoMedicamenteUltimamente == "" || values.pregunta17 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha sido picado por un chipo o ha habitado en vivienda rural en zona endémica para la enfermedad de chagas?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='picadaChipoEnfermedadChagas' value={values.picadaChipoEnfermedadChagas} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='picadaChipoEnfermedadChagas' value={values.picadaChipoEnfermedadChagas} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.picadaChipoEnfermedadChagas == "" || values.pregunta18 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="sipicadaChipoEnfermedadChagas" type="radio" name='picadaChipoEnfermedadChagas' checked={values.picadaChipoEnfermedadChagas} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sipicadaChipoEnfermedadChagas"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="nopicadaChipoEnfermedadChagas" type="radio" name='picadaChipoEnfermedadChagas' checked={!values.picadaChipoEnfermedadChagas} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="nopicadaChipoEnfermedadChagas"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.picadaChipoEnfermedadChagas == "" || values.pregunta18 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -753,57 +852,72 @@ const VerFormulario = () => {
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha recibido vacunaciones en el ultimo años?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='vacunacionesUltimoYear' value={values.vacunacionesUltimoYear} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='vacunacionesUltimoYear' value={values.vacunacionesUltimoYear} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.vacunacionesUltimoYear == "" || values.pregunta19 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="sivacunacionesUltimoYear" type="radio" name='vacunacionesUltimoYear' checked={values.vacunacionesUltimoYear} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sivacunacionesUltimoYear"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input className="cursor-pointer" id="novacunacionesUltimoYear" type="radio" name='vacunacionesUltimoYear' checked={!values.vacunacionesUltimoYear} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="novacunacionesUltimoYear"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>                                                    
+                                                    <p>
+                                                        {values.vacunacionesUltimoYear == "" || values.pregunta19 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className='flex flex-col'>
                                         <label htmlFor="donadoUltimamente" className='font-bold'>Hombre, ¿Ha tenido relaciones sexuales con otro hombre?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='tenidoRelacionesOtroHombre' value={values.tenidoRelacionesOtroHombre} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='tenidoRelacionesOtroHombre' value={values.tenidoRelacionesOtroHombre} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.tenidoRelacionesOtroHombre  == "" || values.pregunta20 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="sitenidoRelacionesOtroHombre" className="cursor-pointer" type="radio" name='tenidoRelacionesOtroHombre' checked={values.tenidoRelacionesOtroHombre} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sitenidoRelacionesOtroHombre"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="notenidoRelacionesOtroHombre" className="cursor-pointer" type="radio" name='tenidoRelacionesOtroHombre' checked={!values.tenidoRelacionesOtroHombre} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="notenidoRelacionesOtroHombre"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.tenidoRelacionesOtroHombre  == "" || values.pregunta20 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <label htmlFor="donadoUltimamente" className='font-bold'>¿Ha tenido relaciones sexuales con prostitutas en los ultimos 12 meses?</label>
                                         <div className='flex justify-evenly my-1'>
-                                            {/* <div>
-                                                <input type="radio" name='relacionesProstitutasUltimamente' value={values.relacionesProstitutasUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="siDone"> Sí</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name='relacionesProstitutasUltimamente' value={values.relacionesProstitutasUltimamente} onChange={e => cambioValorChecked(e)}/>
-                                                <label htmlFor="Done"> No</label>
-                                            </div> */}
-                                            <div>
-                                                <p>
-                                                    {values.relacionesProstitutasUltimamente  == "" || values.pregunta21 == false ? 'No': 'Sí'}
-                                                </p>
-                                            </div>
+                                            {editando ? (
+                                                <>
+                                                    <div>
+                                                        <input id="sirelacionesProstitutasUltimamente" className="cursor-pointer" type="radio" name='relacionesProstitutasUltimamente' checked={values.relacionesProstitutasUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="sirelacionesProstitutasUltimamente"> Sí</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="norelacionesProstitutasUltimamente" className="cursor-pointer" type="radio" name='relacionesProstitutasUltimamente' checked={!values.relacionesProstitutasUltimamente} onChange={e => cambioValorChecked(e)}/>
+                                                        <label className="cursor-pointer" htmlFor="norelacionesProstitutasUltimamente"> No</label>
+                                                    </div>
+                                                </>
+                                            ):(
+                                                <div>
+                                                    <p>
+                                                        {values.relacionesProstitutasUltimamente  == "" || values.pregunta21 == false ? 'No': 'Sí'}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
