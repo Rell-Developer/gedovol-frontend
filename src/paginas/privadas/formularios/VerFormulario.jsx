@@ -140,7 +140,7 @@ const VerFormulario = () => {
 
             console.log(values);
 
-            let {data} = await clienteAxios.post('/formulario/registrar-formulario', values);
+            let {data} = await clienteAxios.put(`/formulario/actualizar-formulario/${params.id}`, values);
 
             setTimeout(() => {
                 if(data.error){
@@ -151,7 +151,7 @@ const VerFormulario = () => {
                 }
     
                 setLoading(false);
-                setMsgGuardado('Formulario guardado correctamente');
+                setMsgGuardado(data.message);
 
                 setTimeout(() => navigate('/admin/formularios'), 1500);
             }, 1500);
@@ -220,6 +220,7 @@ const VerFormulario = () => {
 
                                     <button
                                         className={`${editando ? '':'hidden'} w-full flex cursor-pointer p-3 bg-color3 hover:bg-color2 text-white font-bold rounded-lg shadow transition-all mx-2`}
+                                        onClick={e => handleSubmit()}
                                     >
                                         Guardar
                                     </button>
@@ -322,12 +323,12 @@ const VerFormulario = () => {
                                             <>
                                                 <div className='flex justify-evenly my-1'>
                                                     <div>
-                                                        <input type="radio" name='fechaTatuado' id="siTatuado" checked={values.fechaTatuadoUltimamente != '' || aparicionCalendarTatuado ? true:false} onChange={e => setAparacionCalendarTatuadoUltimamente(true)}/>
-                                                        <label htmlFor="siTatuado"> Sí</label>
+                                                        <input className="cursor-pointer" type="radio" name='fechaTatuado' id="siTatuado" checked={values.fechaTatuadoUltimamente != '' || aparicionCalendarTatuado ? true:false} onChange={e => setAparacionCalendarTatuadoUltimamente(true)}/>
+                                                        <label className="cursor-pointer" htmlFor="siTatuado"> Sí</label>
                                                     </div>
                                                     <div>
-                                                        <input type="radio" name='fechaTatuado' id="noTatuado" checked={values.fechaTatuadoUltimamente == '' || !aparicionCalendarTatuado ? false:true} onChange={e => setAparacionCalendarTatuadoUltimamente(false)}/>
-                                                        <label htmlFor="noTatuado"> No</label>
+                                                        <input className="cursor-pointer" type="radio" name='fechaTatuado' id="noTatuado" checked={values.fechaTatuadoUltimamente == '' || !aparicionCalendarTatuado ? false:true} onChange={e => setAparacionCalendarTatuadoUltimamente(false)}/>
+                                                        <label className="cursor-pointer" htmlFor="noTatuado"> No</label>
                                                     </div>
                                                 </div>
                                                 <input 
