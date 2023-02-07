@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import Alerta from '../../components/publicos/Alerta.jsx';
 import RedHeartSpinner from '../../components/publicos/RedHeartSpinner.jsx';
 
+// privados
+import DonorOption from '../../components/privados/formularios/DonorOption.jsx';
+
 // Cliente Axios
 import clienteAxios from '../../config/axios.jsx';
 
@@ -13,7 +16,7 @@ const NewForm = () => {
 
     // UseStates
     const [values, setValues] = useState({
-        donante:'',
+        donante_id:'',
         fechaDonadoUltimamente:'',
         fechaTatuadoUltimamente:'',
         enfermedadVenerea: '',
@@ -52,11 +55,36 @@ const NewForm = () => {
     const [segundaPaginado, setSegundaPaginado] = useState(false);
     const [loading, setLoading] = useState(true);
     const [msgGuardado, setMsgGuardado] = useState('');
+    const [donantes, setDonantes] = useState([]);
 
     // Navegador
     const navigate = useNavigate();
 
     useEffect(()=>{
+
+        const busquedaDonantes = async() =>{
+            let {data} = await clienteAxios('/donante/obtener-donantes');
+            // let data = [];
+
+            console.log(data.datos)
+
+            if(data.error){
+                setAlerta({message: data.message, error: true});
+                setTimeout(() => setAlerta({}), 1500);
+                return
+            }
+
+            if(data.length < 1){
+                setAlerta({message: 'No hay donantes registrados, por favor, registre donantes para poder crear formularios', error:true});
+                // setTimeout(() => navigate('/admin'), 3000);
+                return
+            }
+
+            setDonantes(data.datos);
+            console.log(data.datos);
+        }
+
+        busquedaDonantes();
         setTimeout(() => {
             setLoading(false);
         }, 1500);
@@ -67,6 +95,8 @@ const NewForm = () => {
     const actualizarInputs = (e) =>{
         //Destructuing y luego guardado de los datos
         const {name, value} = e.target;
+
+        console.log(`${name}:${value}`)
         setValues({
             ...values,
             [name]: value,
@@ -182,16 +212,21 @@ const NewForm = () => {
                                 <label htmlFor="tipoSangre" className='font-bold'>Donante</label>
                                 <select 
                                     id="tipoSangre"
-                                    name="donante" 
-                                    value={values.donante}
+                                    name="donante_id" 
+                                    value={values.donante_id}
                                     onChange={e => actualizarInputs(e)}
                                     className='bg-white w-full p-2 rounded-lg border-4 border-gray-200'
                                 >
-                                    <option value="">Seleccione a un donante</option>
-                                    <option value="28012038">Roque Emilio Lopez Loreto - 28012038</option>
-                                    <option value="19685321">Adriana Carolina Moncada - 19685321</option>
-                                    <option value="29741018">Victor Alejandro Maldonado - 29741018</option>
-                                    <option value="19254131">Adriana Roa - 19254131</option>
+                                    {donantes.length > 0 ? (
+                                        <>
+                                            <option value="">Seleccione a un donante</option>
+                                            {donantes.map((donante, index) => <DonorOption datos={donante} key={index}/>)}
+                                        </>
+                                    ):(
+                                        <>
+                                            <option value="">Debe registrar donantes para llenar formularios</option>
+                                        </>
+                                    )}
                                 </select>
                             </div>
 

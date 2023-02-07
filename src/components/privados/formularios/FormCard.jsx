@@ -74,7 +74,7 @@ const FormCard = ({formulario}) => {
                         <div className={`${eliminar || eliminando ? 'hidden':''} w-full`}>
                             <div>
                                 <p className='text-color2'>
-                                    Donante: <span className='font-normal text-black'>Nombre del Donante</span>
+                                    Donante: <span className='font-normal text-black'>{formulario.nombre} {formulario.apellido}</span>
                                 </p>
                                 <p className='text-color2'>
                                     Cedula: <span className='font-normal text-black'>{formulario.donante_id}</span>

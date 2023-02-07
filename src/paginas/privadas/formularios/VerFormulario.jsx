@@ -42,7 +42,9 @@ const VerFormulario = () => {
         fechaDonacion:'',
         donante_id:'',
         ultima_donacion: '',
-        ultimo_tatuaje:''
+        ultimo_tatuaje:'',
+        nombre: '',
+        apellido: ''
     });
 
     // Alerta
@@ -238,7 +240,7 @@ const VerFormulario = () => {
                                     <div className='flex flex-col'>
                                         <label htmlFor="tipoSangre" className='font-bold'>Donante</label>
                                         <p>
-                                            {values.donante_id}
+                                            {values.nombre} {values.apellido} - {values.donante_id}
                                         </p>
                                     </div>
 
